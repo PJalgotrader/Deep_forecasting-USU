@@ -1,11 +1,11 @@
 
-# Machine Learning
+# Deep Forecasting 
 
-Repository for machine learning courses owned and maintained by prof. Jahangiry
+Repository for Deep Forecasting courses owned and maintained by prof. Jahangiry
 
-* The [main](https://github.com/PJalgotrader/Machine_Learning-USU/tree/main) branch contains some general contents including **Python crash course**, data, cheatsheets, Google Colab tutorials, **PyCaret**, and etc.
-* To get access to the materials for older semesters, please check out existing branches (2022-1-spring, 2022-2-fall, ...) 
-* Latest lecture slides and Python notebooks should be found under the [2022-2-fall](https://github.com/PJalgotrader/Machine_Learning-USU/tree/2022-2-fall) branch!
+* The main branch contains some general contents including **Python crash course**, data, Google Colab tutorials, **PyCaret**, and etc.
+* You can find the latest lecture slides and Python notebooks in the **New slides** folder under Lectures. 
+
 
 
 
@@ -30,7 +30,7 @@ Pedram is one of the project mentors at the [Analytics Solutions Center](https:/
 
 ## Topics:
 
-| Machine Learning Topics                                                                              |
+| Deep Forecasting Topics                                                                              |
 |--------------------------------------------------------------------------------------------------|
 | ML introduction                                                                                  |
 | Python Crash Course                                                                              |
