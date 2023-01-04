@@ -1,3 +1,5 @@
+![DF cover](https://user-images.githubusercontent.com/19335954/210499919-b5000dda-b46c-42b9-b274-fe06116c8260.png)
+
 
 # Deep Forecasting 
 
@@ -44,7 +46,6 @@ Pedram is one of the project mentors at the [Analytics Solutions Center](https:/
 |Module 8- Transformers (Attention is all you need!) |
 |Module 9- Prophet and Neural Prophet |
 
-![DF cover](https://user-images.githubusercontent.com/19335954/210499919-b5000dda-b46c-42b9-b274-fe06116c8260.png)
 
 <img src="images/Jahangirylogo.png" width=150 align="right">
 
