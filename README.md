@@ -25,32 +25,22 @@ Pedram is one of the project mentors at the [Analytics Solutions Center](https:/
 [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/pedram-jahangiry-cfa-5778015a)
 
 
+![DF cover](https://user-images.githubusercontent.com/19335954/210499919-b5000dda-b46c-42b9-b274-fe06116c8260.png)
 
 
 
-## Topics:
 
-| Deep Forecasting Topics                                                                              |
+| **Deep Forecasting Topics**                                                                              |
 |--------------------------------------------------------------------------------------------------|
-| ML introduction                                                                                  |
-| Python Crash Course                                                                              |
-| Machine learning concepts (Part 1: Overfitting, Bias-variance trade off, Evaluation metric)      |
-| Machine learning concepts (Part 2:  Cross validation+ loss functions + Gradient descent and SGD) |
-| Machine learning concepts (Part 3: Putting it all together!)                                     |
-| Linear regression                                                          |
-| Polynomial regression                                              |
-| Regularization (Ridge + Lasso + Elastic Net)                                           |
-| Logistic regression                                                                      |
-| Classification metrics                                                                           |
-| KNN regression and classification (Theory)                                                       |
-| Support Vector Machines                                       |
-| Decision Tree                                                                 |
-| Random Forest                                                                           |
-| Boosting                                                       |
-| Dimensionality Reduction: PCA                                                           |
-| Clustering : K-mean and Hirearchichal                                                  |
-| PyCaret me!                                                                                      |
-
+|Module 1- Introduction to Deep Forecasting|
+|Module 2- Setting up Deep Forecasting Environment|
+|Module 3- ETS and Exponential Smoothing|
+|Module 4- SARIMAX models|
+|Module 5- Machine Learning for Time series Forecasting|
+|Module 6- Deep Neural Networks|
+|Module 7- Deep Sequence Modeling (RNN, LSTM)|
+|Module 8- Transformers (Attention is all you need!) |
+|Module 9- Prophet and Neural Prophet |
 
 
 
