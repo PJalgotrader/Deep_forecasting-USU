@@ -39,7 +39,7 @@ Pedram is one of the project mentors at the [Analytics Solutions Center](https:/
 |Module 1- Introduction to Deep Forecasting|
 |Module 2- Setting up Deep Forecasting Environment|
 |Module 3- ETS and Exponential Smoothing|
-|Module 4- SARIMAX models|
+|Module 4- ARIMA models|
 |Module 5- Machine Learning for Time series Forecasting|
 |Module 6- Deep Neural Networks|
 |Module 7- Deep Sequence Modeling (RNN, LSTM)|
