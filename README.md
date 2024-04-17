@@ -44,6 +44,7 @@ Pedram is one of the project mentors at the [Analytics Solutions Center](https:/
 |Module 6- Deep Neural Networks|
 |Module 7- Deep Sequence Modeling (RNN, LSTM)|
 |Module 8- Transformers (Attention is all you need!) |
+|Module 9- Prophet (Forecasting at Scale) 
 
 
 <img src="images/Jahangirylogo.png" width=150 align="right">
