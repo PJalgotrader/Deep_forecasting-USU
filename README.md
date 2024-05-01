@@ -36,15 +36,14 @@ Pedram is one of the project mentors at the [Analytics Solutions Center](https:/
 
 | **Deep Forecasting Topics**                                                                              |
 |--------------------------------------------------------------------------------------------------|
-|Module 1- Introduction to Deep Forecasting|
+|Module 1- Demystifying Timeseries Data and Modeling|
 |Module 2- Setting up Deep Forecasting Environment|
 |Module 3- ETS and Exponential Smoothing|
 |Module 4- ARIMA models|
 |Module 5- Machine Learning for Time series Forecasting|
 |Module 6- Deep Neural Networks|
 |Module 7- Deep Sequence Modeling (RNN, LSTM)|
-|Module 8- Transformers (Attention is all you need!) |
-|Module 9- Prophet (Forecasting at Scale) 
+|Module 8- Prophet (Forecasting at Scale) 
 
 
 <img src="images/Jahangirylogo.png" width=150 align="right">
