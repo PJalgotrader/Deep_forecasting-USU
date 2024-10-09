@@ -50,7 +50,7 @@ def main():
     st.set_page_config(layout="wide")
     st.title("Time Series Forecasting App")
 
-    col1, col2, col3 = st.columns([1.2, 3.8, 5])
+    col1, col2, col3 = st.columns([1.5, 3.5, 5])
 
     with col1:
         st.header("Model Assumptions")
