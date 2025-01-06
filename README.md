@@ -1,7 +1,7 @@
 ![DF cover](https://user-images.githubusercontent.com/19335954/210499919-b5000dda-b46c-42b9-b274-fe06116c8260.png)
 
 
-# Deep Forecasting (2024-2025)
+# Deep Forecasting (2025-2026)
 
 Repository for Deep Forecasting courses owned and maintained by prof. Jahangiry
 
