@@ -6,7 +6,7 @@
 
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=flat-square&logo=github)](https://github.com/PJalgotrader/Deep_forecasting-USU)
 [![Colab](https://img.shields.io/badge/Google%20Colab-Ready-F9AB00?style=flat-square&logo=googlecolab)](https://colab.research.google.com)
-[![License](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 
 ---
 
@@ -212,7 +212,7 @@ We welcome contributions from students and the community! Please feel free to:
 
 ## 📄 License
 
-This course material is available under the MIT License. See [LICENSE](LICENSE) file for details.
+This course material is freely available for educational purposes. All rights reserved by Dr. Pedram Jahangiry and Utah State University.
 
 ---
 
