@@ -45,50 +45,41 @@ For students needing a refresher, we provide a comprehensive [Python Crash Cours
 - Time series components and patterns
 - Stationarity and transformations
 - Autocorrelation and partial autocorrelation
-- **Resources**: [Lecture Slides](Lectures%20and%20codes/Module%201-%20Demystifying%20timeseries%20data%20and%20modeling/)
 
 ### Module 2: Setting up Deep Forecasting Environment
 - Python environment configuration
 - Essential libraries and tools
 - Google Colab setup and best practices
-- **Lab**: [Environment Setup Notebook](Lectures%20and%20codes/Module%202-%20Setting%20up%20DF%20environment/module2_ts_basics.ipynb)
-- **Extra**: [Python Crash Course](Lectures%20and%20codes/Module%202-%20Setting%20up%20DF%20environment/Python_Crash_course_2020/)
 
 ### Module 3: Exponential Smoothing Methods
 - Simple, Holt's, and Holt-Winters methods
 - ETS (Error, Trend, Seasonal) models
 - Model selection and validation
-- **Lab**: [Exponential Smoothing Implementation](Lectures%20and%20codes/Module%203-%20Exponential%20Smoothing/Module3-exponential_smoothing_ETS.ipynb)
 
 ### Module 4: ARIMA Models
 - AR, MA, and ARMA processes
 - ARIMA and seasonal ARIMA (SARIMA)
 - Box-Jenkins methodology
-- **Lab**: [ARIMA Modeling](Lectures%20and%20codes/Module%204-%20ARIMA/Module4-ARIMA.ipynb)
 
 ### Module 5: Machine Learning for Time Series
 - Feature engineering for time series
 - Tree-based methods (Random Forest, XGBoost, LightGBM)
 - Cross-validation strategies
-- **Lab**: [ML Time Series Forecasting](Lectures%20and%20codes/Module%205-%20Machine%20Learning%20Forecasting/Module5-ML_timesereis.ipynb)
 
 ### Module 6: Deep Neural Networks
 - Feedforward networks for time series
 - Backpropagation and optimization
 - TensorFlow/Keras implementation
-- **Lab**: [DNN for Time Series](Lectures%20and%20codes/Module%206-%20Deep%20Neural%20Networks/Module6_UnivariateTS_DNN.ipynb)
 
 ### Module 7: Deep Sequence Modeling
 - Recurrent Neural Networks (RNN)
 - Long Short-Term Memory (LSTM) networks
 - Bidirectional and stacked architectures
-- **Lab**: [RNN/LSTM Implementation](Lectures%20and%20codes/Module%207-%20Deep%20Sequence%20Modeling/Module7_Univariate_RNN-LSTM.ipynb)
 
 ### Module 8: Prophet and NeuralProphet
 - Forecasting at scale
 - Handling seasonality and holidays
 - Uncertainty quantification
-- **Lab**: [Prophet Tutorial](Lectures%20and%20codes/Module%208-%20Prophet%20and%20NeuralProphet/Module8_prophet_basics.ipynb)
 
 ---
 
@@ -181,22 +172,6 @@ Huntsman School of Business, Utah State University
 
 ### Background
 Dr. Jahangiry brings extensive industry experience from his role as a Research Associate in the Financial Modeling Group at BlackRock NYC. His research focuses on machine learning, deep learning, and time series forecasting applications in finance and business analytics. He mentors students at the Analytics Solutions Center, providing hands-on experience with real corporate analytics projects.
-
----
-
-## 📝 Course Policies
-
-### Grading Components
-- Homework Assignments: 30%
-- Midterm Project: 25%
-- Final Project: 35%
-- Class Participation: 10%
-
-### Academic Integrity
-All submitted work must be original. Collaboration is encouraged, but direct code copying is prohibited. Please cite all sources and acknowledge any assistance received.
-
-### Late Policy
-Late submissions incur a 10% penalty per day unless prior arrangements are made.
 
 ---
 
