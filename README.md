@@ -124,7 +124,7 @@ All datasets are available in the [`data/`](data/) directory.
 git clone https://github.com/PJalgotrader/Deep_forecasting-USU.git
 cd Deep_forecasting-USU
 
-# Create virtual environment (optional but recommended)
+# Create virtual environment (recommended)
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
@@ -134,6 +134,8 @@ pip install -r requirements.txt
 # Launch Jupyter
 jupyter notebook
 ```
+
+**Note**: The installation may take several minutes as it includes deep learning frameworks and multiple ML libraries. For lighter installation, you can install packages as needed for specific modules.
 
 ---
 
