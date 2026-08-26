@@ -1,6 +1,6 @@
 ![DF cover](https://user-images.githubusercontent.com/19335954/210499919-b5000dda-b46c-42b9-b274-fe06116c8260.png)
 
-# Deep Forecasting - Fall 2025
+# Deep Forecasting - Fall 2026
 ### Advanced Time Series Analysis and Forecasting with Deep Learning
 **Utah State University | Huntsman School of Business**
 
@@ -18,7 +18,7 @@ This comprehensive course introduces students to state-of-the-art time series fo
 
 Upon completion of this course, students will be able to:
 - Master fundamental time series concepts and decomposition techniques
-- Implement classical forecasting methods (ETS, ARIMA/SARIMA)
+- Implement classical forecasting methods (ETS and SARIMAX)
 - Apply machine learning algorithms to time series problems
 - Design and train deep neural networks for sequence modeling
 - Deploy production-ready forecasting models at scale
@@ -56,10 +56,10 @@ For students needing a refresher, we provide a comprehensive [Python Crash Cours
 - ETS (Error, Trend, Seasonal) models
 - Model selection and validation
 
-### Module 4: ARIMA Models
+### Module 4: SARIMAX Models
 - AR, MA, and ARMA processes
-- ARIMA and seasonal ARIMA (SARIMA)
-- Box-Jenkins methodology
+- ARIMA, SARIMA, and SARIMAX
+- Exogenous regressors and Box-Jenkins methodology
 
 ### Module 5: Machine Learning for Time Series
 - Feature engineering for time series
@@ -76,7 +76,7 @@ For students needing a refresher, we provide a comprehensive [Python Crash Cours
 - Long Short-Term Memory (LSTM) networks
 - Bidirectional and stacked architectures
 
-### Module 8: Prophet and NeuralProphet
+### Optional Module 8: Prophet and NeuralProphet
 - Forecasting at scale
 - Handling seasonality and holidays
 - Uncertainty quantification
@@ -87,6 +87,7 @@ For students needing a refresher, we provide a comprehensive [Python Crash Cours
 
 ### Primary Frameworks
 - **[PyCaret](Platforms%20and%20tools/PyCaret/)**: AutoML for time series
+- **[Nixtla](https://nixtlaverse.nixtla.io/)**: Statistical, machine-learning, and neural forecasting libraries
 - **[TensorFlow/Keras](https://www.tensorflow.org/)**: Deep learning
 - **[Prophet/NeuralProphet](https://facebook.github.io/prophet/)**: Scalable forecasting
 - **[Streamlit](Platforms%20and%20tools/streamlit/)**: Interactive dashboards
@@ -206,7 +207,7 @@ Special thanks to:
 <div align="center">
   <img src="images/Jahangirylogo.png" width="150" alt="Course Logo">
   
-  **Fall 2025 | Utah State University**
+  **Fall 2026 | Utah State University**
   
   *Empowering the next generation of data scientists and forecasting experts*
 </div>
