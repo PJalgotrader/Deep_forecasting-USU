@@ -164,6 +164,7 @@ cd Deep_forecasting-USU
 If you already cloned the repository, switch to the test branch with:
 
 ```bash
+git fetch origin
 git switch uv_test
 git pull
 ```
