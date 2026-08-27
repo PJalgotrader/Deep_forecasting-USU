@@ -5,3 +5,8 @@ Lectures and codes/.DS_Store
 Lectures and codes/miscellaneous/.DS_Store
 Lectures and codes/miscellaneous/nixtla/.DS_Store
 Lectures and codes/miscellaneous/nixtla/full_pipeline/.DS_Store
+.venv/
+environments/pycaret/.venv/
+__pycache__/
+*.py[cod]
+logs.log

@@ -1,0 +1,18 @@
+[project]
+name = "deep-forecasting-pycaret"
+version = "0.1.0"
+description = "Isolated full PyCaret environment for DATA 5630"
+requires-python = ">=3.10,<3.11"
+dependencies = [
+    "dask[dataframe,distributed]==2024.4.1",
+    "distributed==2024.4.1",
+    "ipykernel>=6,<8",
+    "jupyterlab>=4,<5",
+    "openpyxl>=3,<4",
+    "pycaret[full]==3.3.2",
+    "statsmodels>=0.14,<0.15",
+    "yfinance>=0.2,<2",
+]
+
+[tool.uv]
+package = false

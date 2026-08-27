@@ -6,7 +6,10 @@
 
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=flat-square&logo=github)](https://github.com/PJalgotrader/Deep_forecasting-USU)
 [![Colab](https://img.shields.io/badge/Google%20Colab-Ready-F9AB00?style=flat-square&logo=googlecolab)](https://colab.research.google.com)
-[![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+
+> [!IMPORTANT]
+> You are viewing the experimental `uv_test` branch. It provides three setup choices for comparison: Google Colab, `uv`, and Conda. The [`main` branch](https://github.com/PJalgotrader/Deep_forecasting-USU/tree/main) remains unchanged.
 
 ---
 
@@ -114,29 +117,141 @@ All datasets are available in the [`data/`](data/) directory.
 
 ## 💻 Getting Started
 
-### Option 1: Google Colab (Recommended)
-1. Click on any notebook's "Open in Colab" button
-2. Sign in with your Google account
-3. Run cells sequentially (Shift+Enter)
+Choose **one** of the following paths. If you are unsure, use Google Colab. It requires no installation.
 
-### Option 2: Local Installation
+### Option 1: Google Colab — easiest
+
+1. Open a notebook on GitHub.
+2. Click its **Open in Colab** badge.
+3. Sign in with your Google account.
+4. Run cells from top to bottom with `Shift+Enter`.
+
+Colab is recommended when you want GPU access or cannot install software on your computer. Package-install cells inside notebooks are intended for Colab.
+
+### Option 2: uv — recommended local setup
+
+`uv` installs the correct Python version, creates an isolated environment, and installs the exact package versions recorded in `uv.lock`.
+
+#### Step 1: Install uv
+
+On **macOS or Linux**, open Terminal and run:
+
 ```bash
-# Clone the repository
-git clone https://github.com/PJalgotrader/Deep_forecasting-USU.git
-cd Deep_forecasting-USU
-
-# Create virtual environment (recommended)
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Launch Jupyter
-jupyter notebook
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-**Note**: The installation may take several minutes as it includes deep learning frameworks and multiple ML libraries. For lighter installation, you can install packages as needed for specific modules.
+Close and reopen Terminal, then verify the installation:
+
+```bash
+uv --version
+```
+
+On **Windows**, open PowerShell and run:
+
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+Close and reopen PowerShell, then run `uv --version`.
+
+#### Step 2: Download this test branch
+
+```bash
+git clone --branch uv_test https://github.com/PJalgotrader/Deep_forecasting-USU.git
+cd Deep_forecasting-USU
+```
+
+If you already cloned the repository, switch to the test branch with:
+
+```bash
+git switch uv_test
+git pull
+```
+
+#### Step 3: Install the course environment
+
+```bash
+uv sync
+```
+
+The first installation can take several minutes because the course uses TensorFlow, PyTorch, and forecasting libraries. Future synchronizations are usually much faster.
+
+Confirm that the correct Python is being used:
+
+```bash
+uv run python --version
+```
+
+The result should begin with `Python 3.11`.
+
+Run the course environment check:
+
+```bash
+uv run python scripts/check_environment.py
+```
+
+If the check ends with **Your main course environment is ready**, the installation worked.
+
+#### Step 4: Start JupyterLab
+
+```bash
+uv run jupyter lab
+```
+
+Your browser will open JupyterLab. Open a notebook and run its cells from top to bottom. You do not need to activate the environment or run `pip install`.
+
+#### PyCaret notebooks
+
+PyCaret uses a separate environment because its full installation requires older versions of some forecasting packages. When the course reaches a PyCaret notebook, run:
+
+```bash
+uv sync --project environments/pycaret
+uv run --project environments/pycaret python environments/pycaret/check_environment.py
+uv run --project environments/pycaret jupyter lab
+```
+
+If the check ends with **Your PyCaret environment is ready**, the installation worked. This environment uses Python 3.10 and does not change the main course environment. Exit JupyterLab before switching between the two environments.
+
+#### Updating later
+
+```bash
+git pull
+uv sync
+```
+
+### Option 3: Conda — supported alternative
+
+Use this path if you already have Anaconda or Miniconda and prefer Conda. Run these commands from the repository folder.
+
+#### Main course environment
+
+```bash
+conda create -n deep-forecasting python=3.11 -y
+conda activate deep-forecasting
+python -m pip install -r requirements.txt
+python -m jupyter lab
+```
+
+#### PyCaret environment
+
+```bash
+conda create -n deep-forecasting-pycaret python=3.10 -y
+conda activate deep-forecasting-pycaret
+python -m pip install -r environments/pycaret/requirements.txt
+python -m jupyter lab
+```
+
+Use only one active Conda environment at a time. Run `conda deactivate` before switching environments.
+
+### Quick troubleshooting
+
+- **`uv: command not found`**: close and reopen Terminal or PowerShell, then try `uv --version` again.
+- **Wrong Python version**: run `uv run python --version` from the repository root. It should report Python 3.11.
+- **PyCaret import error**: close JupyterLab and restart it using the two PyCaret commands above.
+- **Notebook uses the wrong kernel**: restart JupyterLab from the correct environment rather than installing packages inside the notebook.
+- **Local setup is taking too long**: use the notebook's Colab badge instead.
+
+For additional `uv` help, see the official [`uv` installation guide](https://docs.astral.sh/uv/getting-started/installation/) and [Jupyter integration guide](https://docs.astral.sh/uv/guides/integration/jupyter/).
 
 ---
 
