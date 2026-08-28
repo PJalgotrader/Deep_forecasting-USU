@@ -1,6 +1,6 @@
 # uv: Student Quick Start
 
-Start with the [Conda to uv student cheatsheet](conda_to_uv_student_cheatsheet.html).
+Start with the [Conda to uv student cheatsheet (PDF)](conda_to_uv_student_cheatsheet.pdf). The [HTML version](conda_to_uv_student_cheatsheet.html) is also available.
 
 Then test your installation:
 

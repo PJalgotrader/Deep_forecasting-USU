@@ -132,7 +132,7 @@ Colab is recommended when you want GPU access or cannot install software on your
 
 `uv` installs the correct Python version, creates an isolated environment, and installs the exact package versions recorded in `uv.lock`.
 
-New to uv? Read the [Conda → uv student cheatsheet](Platforms%20and%20tools/uv/conda_to_uv_student_cheatsheet.html) first.
+New to uv? Start with the [Conda → uv student cheatsheet (PDF)](Platforms%20and%20tools/uv/conda_to_uv_student_cheatsheet.pdf). The [HTML version](Platforms%20and%20tools/uv/conda_to_uv_student_cheatsheet.html) is also available.
 
 #### Step 1: Install uv
 

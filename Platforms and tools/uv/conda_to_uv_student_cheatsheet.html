@@ -130,6 +130,19 @@
       .card{padding:18px}
       table{font-size:.9rem}
     }
+    @media print{
+      @page{size:Letter;margin:.45in}
+      body{background:#fff}
+      .wrap{max-width:none;padding:0}
+      .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+      .card{box-shadow:none;margin:10px 0;padding:16px;break-inside:avoid-page}
+      h2{font-size:1.35rem}
+      h2,h3{break-after:avoid-page}
+      pre,.tip,.mini,table,tr{break-inside:avoid-page}
+      p,li{orphans:3;widows:3}
+      pre{padding:12px;font-size:.86rem;line-height:1.4;white-space:pre-wrap;overflow-wrap:anywhere}
+      .footer{margin-top:24px}
+    }
   </style>
 </head>
 <body>
