@@ -9,7 +9,7 @@
 [![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 
 > [!IMPORTANT]
-> You are viewing the experimental `uv_test` branch. It provides three setup choices for comparison: Google Colab, `uv`, and Conda. The [`main` branch](https://github.com/PJalgotrader/Deep_forecasting-USU/tree/main) remains unchanged.
+> Choose the setup that works best for you: Google Colab, `uv`, or Conda. If you are unsure, begin with Google Colab or the small `uv` test below.
 
 ---
 
@@ -156,18 +156,17 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 
 Close and reopen PowerShell, then run `uv --version`.
 
-#### Step 2: Download this test branch
+#### Step 2: Download the course repository
 
 ```bash
-git clone --branch uv_test https://github.com/PJalgotrader/Deep_forecasting-USU.git
+git clone https://github.com/PJalgotrader/Deep_forecasting-USU.git
 cd Deep_forecasting-USU
 ```
 
-If you already cloned the repository, switch to the test branch with:
+If you already cloned the repository:
 
 ```bash
-git fetch origin
-git switch uv_test
+git switch main
 git pull
 ```
 
@@ -226,6 +225,40 @@ uv run --project environments/pycaret jupyter lab
 
 If the check ends with **Your PyCaret environment is ready**, the installation worked. This environment uses Python 3.10 and does not change the main course environment. Exit JupyterLab before switching between the two environments.
 
+#### Use notebooks in VS Code
+
+Open the repository from Terminal:
+
+```bash
+code .
+```
+
+If `code` is not recognized on macOS, open VS Code, press `Cmd+Shift+P`, and run **Shell Command: Install 'code' command in PATH**. You can also open the repository through **File → Open Folder**.
+
+After synchronizing both environments, register them as named Jupyter kernels once:
+
+```bash
+uv run python -m ipykernel install --user --name deep-forecasting --display-name "Python 3.11 (Deep Forecasting)"
+
+uv run --project environments/pycaret python -m ipykernel install --user --name deep-forecasting-pycaret --display-name "Python 3.10 (Deep Forecasting PyCaret)"
+```
+
+In VS Code:
+
+1. Open a notebook.
+2. Click **Select Kernel** in the upper-right corner.
+3. Choose **Python 3.11 (Deep Forecasting)** for regular course notebooks.
+4. Choose **Python 3.10 (Deep Forecasting PyCaret)** for PyCaret notebooks.
+
+VS Code remembers the kernel for each notebook. To confirm the active environment, run:
+
+```python
+import sys
+print(sys.executable)
+```
+
+The path should contain either the root `.venv` or `environments/pycaret/.venv`.
+
 #### Updating later
 
 ```bash
@@ -263,6 +296,7 @@ Use only one active Conda environment at a time. Run `conda deactivate` before s
 - **Wrong Python version**: run `uv run python --version` from the repository root. It should report Python 3.11.
 - **PyCaret import error**: close JupyterLab and restart it using the two PyCaret commands above.
 - **Notebook uses the wrong kernel**: restart JupyterLab from the correct environment rather than installing packages inside the notebook.
+- **`code: command not found`**: install the VS Code shell command from the Command Palette, or open the repository with **File → Open Folder**.
 - **Local setup is taking too long**: use the notebook's Colab badge instead.
 
 For additional `uv` help, see the official [`uv` installation guide](https://docs.astral.sh/uv/getting-started/installation/) and [Jupyter integration guide](https://docs.astral.sh/uv/guides/integration/jupyter/).
