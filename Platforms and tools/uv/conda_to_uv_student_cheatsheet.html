@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conda → uv: Simple Student Cheat Sheet</title>
+  <style>
+    :root{
+      --bg:#f7f8fa;
+      --card:#ffffff;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --accent:#2563eb;
+      --code:#0f172a;
+      --code-text:#e5e7eb;
+      --tip:#ecfdf5;
+      --tip-border:#10b981;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      line-height:1.6;
+    }
+    .wrap{
+      max-width:980px;
+      margin:0 auto;
+      padding:40px 20px 64px;
+    }
+    h1{
+      font-size:clamp(2rem,5vw,3.3rem);
+      line-height:1.05;
+      margin:0 0 12px;
+    }
+    h2{
+      margin-top:0;
+      font-size:1.5rem;
+    }
+    h3{
+      margin-bottom:8px;
+    }
+    .subtitle{
+      color:var(--muted);
+      font-size:1.08rem;
+      margin-bottom:28px;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:24px;
+      margin:18px 0;
+      box-shadow:0 3px 12px rgba(15,23,42,.04);
+    }
+    .badge{
+      display:inline-block;
+      color:#1d4ed8;
+      background:#dbeafe;
+      border-radius:999px;
+      padding:5px 10px;
+      font-size:.85rem;
+      font-weight:700;
+      margin-bottom:14px;
+    }
+    code{
+      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    }
+    pre{
+      margin:10px 0 0;
+      padding:16px;
+      overflow:auto;
+      border-radius:12px;
+      background:var(--code);
+      color:var(--code-text);
+      font-size:.93rem;
+      line-height:1.5;
+    }
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:12px;
+      font-size:.96rem;
+    }
+    th,td{
+      border-bottom:1px solid var(--line);
+      padding:11px 10px;
+      text-align:left;
+      vertical-align:top;
+    }
+    th{
+      background:#f9fafb;
+    }
+    .tip{
+      background:var(--tip);
+      border-left:4px solid var(--tip-border);
+      padding:16px 18px;
+      border-radius:10px;
+      margin-top:16px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:16px;
+    }
+    .mini{
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:16px;
+      background:#fff;
+    }
+    ul{
+      padding-left:22px;
+    }
+    .small{
+      font-size:.92rem;
+      color:var(--muted);
+    }
+    .footer{
+      text-align:center;
+      color:var(--muted);
+      margin-top:34px;
+      font-size:.9rem;
+    }
+    @media (max-width:760px){
+      .grid{grid-template-columns:1fr}
+      .wrap{padding-top:24px}
+      .card{padding:18px}
+      table{font-size:.9rem}
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="badge">Student Cheat Sheet</div>
+    <h1>Moving from Conda to uv</h1>
+    <p class="subtitle">
+      A simple guide to installing uv, creating Python projects, managing packages, and understanding virtual environments.
+    </p>
+
+    <section class="card">
+      <h2>1. What is uv?</h2>
+      <p>
+        <strong>uv</strong> is a fast Python package and environment manager. It can replace many common uses of
+        <strong>Conda + pip + virtualenv</strong> for regular Python projects.
+      </p>
+      <div class="tip">
+        <strong>Main idea:</strong> each project normally has its own <code>.venv</code>, plus a
+        <code>pyproject.toml</code> and <code>uv.lock</code>.
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>2. Install uv</h2>
+      <div class="grid">
+        <div class="mini">
+          <h3>Windows</h3>
+          <p>Open <strong>PowerShell</strong> and run:</p>
+          <pre><code>powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"</code></pre>
+          <p class="small">Then close and reopen PowerShell.</p>
+        </div>
+
+        <div class="mini">
+          <h3>macOS</h3>
+          <p>Open <strong>Terminal</strong> and run:</p>
+          <pre><code>curl -LsSf https://astral.sh/uv/install.sh | sh</code></pre>
+          <p class="small">Then close and reopen Terminal.</p>
+        </div>
+      </div>
+
+      <h3>Check that it worked</h3>
+      <pre><code>uv --version</code></pre>
+    </section>
+
+    <section class="card">
+      <h2>3. Conda → uv Cheat Sheet</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Task</th>
+            <th>Conda</th>
+            <th>uv</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Create project/environment</td>
+            <td><code>conda create -n myproj python=3.12</code></td>
+            <td><code>uv init --python 3.12</code></td>
+          </tr>
+          <tr>
+            <td>Activate environment</td>
+            <td><code>conda activate myproj</code></td>
+            <td>Usually not needed</td>
+          </tr>
+          <tr>
+            <td>Add a package</td>
+            <td><code>conda install pandas</code></td>
+            <td><code>uv add pandas</code></td>
+          </tr>
+          <tr>
+            <td>Remove a package</td>
+            <td><code>conda remove pandas</code></td>
+            <td><code>uv remove pandas</code></td>
+          </tr>
+          <tr>
+            <td>Run Python</td>
+            <td><code>python</code></td>
+            <td><code>uv run python</code></td>
+          </tr>
+          <tr>
+            <td>Run script</td>
+            <td><code>python app.py</code></td>
+            <td><code>uv run python app.py</code></td>
+          </tr>
+          <tr>
+            <td>Rebuild environment</td>
+            <td><code>conda env create ...</code></td>
+            <td><code>uv sync</code></td>
+          </tr>
+          <tr>
+            <td>Install Python</td>
+            <td>Managed by Conda</td>
+            <td><code>uv python install 3.12</code></td>
+          </tr>
+          <tr>
+            <td>List installed packages</td>
+            <td><code>conda list</code></td>
+            <td><code>uv pip list</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>4. Recommended workflow for a new project</h2>
+      <pre><code>mkdir my-project
+cd my-project
+
+uv init --python 3.12
+uv add numpy pandas scikit-learn matplotlib
+uv add --dev pytest ruff ipykernel
+
+uv run python</code></pre>
+
+      <div class="tip">
+        Prefer <code>uv add package-name</code> instead of <code>pip install package-name</code>.
+        This keeps your project dependencies properly recorded.
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>5. Important project files</h2>
+      <pre><code>my-project/
+│
+├── .venv/
+├── .python-version
+├── pyproject.toml
+├── uv.lock
+└── main.py</code></pre>
+
+      <ul>
+        <li><strong>.venv/</strong> → the virtual environment for this project</li>
+        <li><strong>pyproject.toml</strong> → your main project and dependency file</li>
+        <li><strong>uv.lock</strong> → exact package versions used by the project</li>
+      </ul>
+
+      <p><strong>Commit to Git:</strong></p>
+      <pre><code>pyproject.toml
+uv.lock
+.python-version</code></pre>
+
+      <p><strong>Do not commit:</strong></p>
+      <pre><code>.venv/</code></pre>
+    </section>
+
+    <section class="card">
+      <h2>6. What about 10 projects = 10 virtual environments?</h2>
+      <p>
+        Yes. If you have 10 separate projects, you normally have 10 separate <code>.venv</code> folders.
+        This is intentional because each project is isolated.
+      </p>
+
+      <p>
+        It is not as wasteful as it looks. uv keeps a <strong>global package cache</strong> and can reuse package
+        data efficiently instead of downloading everything from scratch for every project.
+      </p>
+
+      <div class="tip">
+        <strong>Why isolation is good:</strong> upgrading NumPy, PyTorch, or pandas for Project B will not accidentally
+        break Project A.
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>7. Jupyter / VS Code / Cursor</h2>
+      <p>Add Jupyter support:</p>
+      <pre><code>uv add --dev jupyterlab ipykernel</code></pre>
+
+      <p>Run Jupyter:</p>
+      <pre><code>uv run jupyter lab</code></pre>
+
+      <p>
+        In VS Code or Cursor, choose the Python interpreter inside:
+      </p>
+      <pre><code>your-project/.venv</code></pre>
+    </section>
+
+    <section class="card">
+      <h2>8. Common data science setup</h2>
+      <pre><code>uv add numpy pandas scipy scikit-learn statsmodels matplotlib plotly
+uv add --dev jupyterlab ipykernel pytest ruff</code></pre>
+    </section>
+    <section class="card">
+      <h2>9. Removing packages and resetting the environment</h2>
+
+      <h3>Remove a package</h3>
+      <pre><code>uv remove pandas</code></pre>
+      <p>This removes the package from your project dependencies and updates the environment.</p>
+
+      <h3>Delete the entire virtual environment</h3>
+      <p><strong>Windows PowerShell:</strong></p>
+      <pre><code>Remove-Item -Recurse -Force .venv</code></pre>
+
+      <p><strong>macOS / Linux:</strong></p>
+      <pre><code>rm -rf .venv</code></pre>
+
+      <p>
+        Deleting <code>.venv</code> does <strong>not</strong> delete your project or dependency list.
+        Your dependencies are still recorded in <code>pyproject.toml</code> and <code>uv.lock</code>.
+      </p>
+
+      <div class="tip">
+        If your environment becomes broken or confusing, delete <code>.venv</code> and run
+        <code>uv sync</code> to rebuild it cleanly.
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>10. When do you use <code>uv sync</code>?</h2>
+      <p>
+        <code>uv sync</code> makes your local <code>.venv</code> match the dependencies defined by
+        the project and lock file.
+      </p>
+
+      <h3>Use case 1: You cloned a project from GitHub</h3>
+      <pre><code>git clone https://github.com/example/my-project.git
+cd my-project
+uv sync</code></pre>
+      <p>
+        uv reads <code>pyproject.toml</code> and <code>uv.lock</code>, creates the virtual environment,
+        and installs the correct packages.
+      </p>
+
+      <h3>Use case 2: You deleted <code>.venv</code></h3>
+      <pre><code>uv sync</code></pre>
+      <p>uv rebuilds the environment from the project files.</p>
+
+      <h3>Use case 3: Someone else changed dependencies</h3>
+      <pre><code>git pull
+uv sync</code></pre>
+      <p>This updates your local environment to match the latest project definition.</p>
+
+      <div class="tip">
+        Think of <code>uv sync</code> as:
+        <strong>"Make my computer match this project's dependency recipe."</strong>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>11. The 8 commands to remember</h2>
+      <pre><code>uv init
+uv add pandas
+uv remove pandas
+uv sync
+uv run python
+uv run python app.py
+uv python install 3.12
+uv python list</code></pre>
+    </section>
+
+    <section class="card">
+      <h2>12. Simple rules</h2>
+      <ol>
+        <li>One real project → one <code>.venv</code>.</li>
+        <li>Use <code>uv add</code> instead of <code>pip install</code>.</li>
+        <li>Use <code>uv run</code> instead of relying on environment activation.</li>
+        <li>Commit <code>uv.lock</code>.</li>
+        <li>Do not commit <code>.venv</code>.</li>
+        <li>Use <code>--dev</code> for Jupyter, testing, and development tools.</li>
+        <li>If the environment gets messy, delete <code>.venv</code> and run <code>uv sync</code>.</li>
+        <li>Keep Conda only when you truly need unusual non-Python/system packages.</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>Bonus: instruction for AI coding assistants</h2>
+      <p>You can place this in <code>CLAUDE.md</code> or <code>AGENTS.md</code>:</p>
+      <pre><code>This project uses uv for Python dependency and environment management.
+Use `uv add` / `uv remove` for dependencies and `uv run` for commands.
+Do not use pip or Conda unless explicitly requested.</code></pre>
+    </section>
+
+    <p class="footer">
+      Conda → uv Student Guide
+    </p>
+  </main>
+</body>
+</html>

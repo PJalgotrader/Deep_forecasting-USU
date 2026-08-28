@@ -132,6 +132,8 @@ Colab is recommended when you want GPU access or cannot install software on your
 
 `uv` installs the correct Python version, creates an isolated environment, and installs the exact package versions recorded in `uv.lock`.
 
+New to uv? Read the [Conda → uv student cheatsheet](Platforms%20and%20tools/uv/conda_to_uv_student_cheatsheet.html) first.
+
 #### Step 1: Install uv
 
 On **macOS or Linux**, open Terminal and run:
@@ -168,6 +170,17 @@ git fetch origin
 git switch uv_test
 git pull
 ```
+
+Before installing the full course environment, you can run the [small uv test](Platforms%20and%20tools/uv/README.md):
+
+```bash
+cd "Platforms and tools/uv/simple_test"
+uv sync
+uv run python main.py
+cd ../../../
+```
+
+You should see **uv is working!**
 
 #### Step 3: Install the course environment
 
