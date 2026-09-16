@@ -29,7 +29,7 @@ In the repo the uv option replaced the old `environments/pycaret/` project (`git
 - [x] Step 4 - `tutorial.html` (self-contained, light/dark, phone-safe; Google Fonts only external dependency) and `video_script.md` (12-min scene plan with on-screen actions, B-roll list, thumbnail ideas). Update both if pins or versions change. Also `conda_to_uv_student_cheatsheet.html`: Pedram's beginner uv cheat sheet, expanded 2026-09-16 (the three files, updating, troubleshooting, course-project section); original kept in `backup_notebooks_2026-09-16/`.
 - [x] Step 5 - question bank m2_p1 Q17 rewritten around `pycaret-core` + the statsmodels pin (Drive only: `DATA5630_question_bank/m2_bank/m2_p1_Qbank.md`, PDF regenerated; `review/build_question_bank_pdfs.py` font path fixed to fall back to matplotlib's DejaVu fonts)
 - [x] Step 6 - old `DF_environment.yml` moved to `backup_notebooks_2026-09-16/` (Drive). Module 2 deck (`Module 2-DF environment-original.pptx`, Drive) edited: PyCaret install bullet + install line updated, new slide 8 "Three ways to run the course notebooks" inserted after the Colab slide; PDF exported with PowerPoint and copied to the repo as `Lectures and codes/Module 2- Setting up DF environment/Module 2-DF environment.pdf`
-- [x] Step 7 - `python_migration/` added to the course repo on branch `pycaret-core-2026` (`environments/pycaret` -> `python_migration/uv` via git mv; five notebooks replaced with fixed Colab badges; README, `.gitignore`, `Platforms and tools/PyCaret` and `Platforms and tools/uv` updated). Merge + push pending Pedram's review.
+- [x] Step 7 - `python_migration/` merged into `main` and pushed 2026-09-16 (commits 96bd22d + 288f69a; working branch `pycaret-core-2026` deleted). `environments/pycaret` -> `python_migration/uv` via git mv; five course notebooks + three Platforms/PyCaret demos replaced and re-executed; README, `.gitignore`, `Platforms and tools/PyCaret`, `Platforms and tools/uv`, Module 2 PDF updated.
 
 ## Step 3 scope - notebooks that run pycaret (done 2026-09-16; kept for reference)
 
@@ -64,3 +64,31 @@ Cell layout in the six with an install section: [4] markdown link to pycaret git
 - When sktime releases a version > 1.1.0 containing PR 10972, test dropping the `statsmodels<0.15` pin (`uv lock --upgrade-package sktime --upgrade-package statsmodels`, rerun the smoke suite), then update all three options and the notebooks' comments.
 - pycaret-core is five weeks into "resumed community maintenance" (v3.5.0, 2026-08-09). Check https://github.com/sktime/pycaret/releases each semester.
 - Longer term: Modules 3, 4, 5 already have statsforecast / mlforecast sibling notebooks; All-in-one, SARIMAX, and the two stock-market notebooks do not. If pycaret-core stalls, that is the exit path.
+
+## Where things stand (end of 2026-09-16)
+
+All seven steps are done. Students on GitHub `main` get: the three run options, the tutorial, the executed Colab tests, notebooks with the guarded install cell, the updated cheat sheet, and the Module 2 deck with the new "Three ways to run" slide. On Drive: the same folder plus `evidence/`, `video_script.md`, `backup_notebooks_2026-09-16/` (originals of every file that was replaced, including the old `DF_environment.yml` and the pre-edit Module 2 deck + PDF), and the question bank (Q17 rewritten, PDF regenerated).
+
+Verified today: Colab (Python 3.13.15, fresh runtime, 28-model leaderboard), uv (Python 3.13.5, lock of 165 packages + shap), conda (`df_pycaret`, 2 min 21 s build), all seven course notebooks, all three PyCaret demo notebooks, VS Code kernel registration.
+
+## Keeping Drive and GitHub in sync
+
+Two copies exist on purpose; keep them equal where they overlap.
+
+| Item | Source of truth | Copy | How to sync |
+|---|---|---|---|
+| Course notebooks (Modules 3, 4, 5, stock market) | Drive `DF Lectures/...` | repo `Lectures and codes/...` | copy, then fix the `python_migration/README.md` relative link depth (repo is one folder deeper) and the Colab badge URL |
+| `python_migration/uv/pyproject.toml` + `uv.lock` | repo | Drive `python_migration/uv/` | copy both files after `uv lock` (Drive `uv/` is a mirror; do not `uv sync` inside Drive) |
+| `tutorial.html` | either (identical) | the other | copy; no repo-only references left in it |
+| uv cheat sheet HTML + PDF | Drive `python_migration/` | repo `Platforms and tools/uv/` | copy HTML, regenerate PDF (`msedge --headless=new --print-to-pdf`) |
+| Module 2 deck | Drive `Module 2- Setting up Deep Forecasting Environment/*.pptx` | repo PDF only | export PDF with PowerPoint (COM `SaveAs(path, 32)`), copy to `Lectures and codes/Module 2- Setting up DF environment/Module 2-DF environment.pdf` |
+| Question bank | Drive `DATA5630_question_bank/` | not in repo | `python review/build_question_bank_pdfs.py m2_bank/m2_p1_Qbank.md` regenerates the student PDF |
+| `CLAUDE.md` (this file) | repo | Drive | the Drive copy keeps the same text plus references to `evidence/` |
+
+## Things learned today that will bite again
+
+- Windows console encoding: set `PYTHONIOENCODING=utf-8` before printing notebook outputs (pip progress bars contain box-drawing characters).
+- Long heredocs with mixed quotes break the Bash tool's parser; write big files with the Write tool.
+- The question bank PDF builder had a font path from a Codex sandbox on another machine; it now falls back to matplotlib's DejaVu fonts. If reportlab complains about fonts again, that block is the place to look.
+- `nbconvert --execute` on Windows prints joblib/loky `KeyError ... resource_tracker` noise at shutdown; it is not a failure. Use `--allow-errors` only for the SARIMAX notebook's intentional exogenous-variables error.
+- python-pptx: edit `run.text`, never `text_frame.text`, to keep the deck's fonts and colours; borrow the deck's own title text box (deepcopy of the shape element) when adding a slide so it matches.
