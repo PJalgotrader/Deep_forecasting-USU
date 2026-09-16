@@ -6,7 +6,12 @@ Lectures and codes/miscellaneous/.DS_Store
 Lectures and codes/miscellaneous/nixtla/.DS_Store
 Lectures and codes/miscellaneous/nixtla/full_pipeline/.DS_Store
 .venv/
-environments/pycaret/.venv/
 __pycache__/
 *.py[cod]
 logs.log
+
+# PyCaret / training artifacts
+catboost_info/
+lightning_logs/
+python_migration/uv/.venv/
+Platforms and tools/PyCaret/my_pycaret_*.pkl

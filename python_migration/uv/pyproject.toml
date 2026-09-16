@@ -1,0 +1,27 @@
+[project]
+name = "df-pycaret-env"
+version = "2026.9"
+description = "Deep Forecasting (DATA 5630/6630) - PyCaret time-series environment (pycaret-core fork on Python 3.13)"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+    # Community fork of PyCaret 3 (same `import pycaret`, same TSForecastingExperiment API)
+    "pycaret-core==3.5.0",
+    # statsmodels 0.15 renamed ETSResults.simulate(random_state=) -> rng=, which breaks
+    # create_model('ets') through sktime 1.1.0. Drop this pin once sktime > 1.1.0 ships the
+    # fix merged 2026-09-13 (sktime PR 10972).
+    "statsmodels>=0.14,<0.15",
+    # gradient-boosting models used by compare_models() (lightgbm_cds_dt, xgboost_cds_dt, catboost_cds_dt).
+    # lightgbm is already a hard dependency of pycaret-core; listed explicitly so it stays guaranteed.
+    "lightgbm>=4.0",
+    "xgboost>=2.0",
+    "catboost>=1.2",
+    # interpret_model() in the PyCaret regression/classification demos needs shap
+    "shap>=0.46",
+    # notebooks
+    "jupyterlab>=4",
+    "ipykernel",
+    "ipywidgets>=8",
+]
+
+[tool.uv]
+package = false

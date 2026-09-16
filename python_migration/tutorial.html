@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PyCaret Survival Guide 2026</title>
+<meta name="description" content="Why the Deep Forecasting PyCaret notebooks stopped working on Google Colab, what we tested, and the three supported ways to run them now.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#F4F6F9; --surface:#FFFFFF; --surface-2:#E9EDF3; --ink:#18212B; --ink-2:#4B5563; --ink-3:#7A8594;
+  --line:#D5DBE3; --accent:#0B7A80; --accent-ink:#FFFFFF; --accent-soft:#D6EEEF;
+  --good:#237A3C; --good-soft:#DCF2E2; --warn:#9A6400; --warn-soft:#FBEFD2; --bad:#B0313F; --bad-soft:#F9DDE0;
+  --code-bg:#1C242E; --code-ink:#E8EDF3; --code-accent:#7FD8DD;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --display:"Bricolage Grotesque","IBM Plex Sans",system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F151B; --surface:#161E27; --surface-2:#1E2832; --ink:#E6ECF2; --ink-2:#B4BFCB; --ink-3:#8593A2;
+    --line:#2C3843; --accent:#4CC3C9; --accent-ink:#0B1A1B; --accent-soft:#143A3D;
+    --good:#6CCB86; --good-soft:#173722; --warn:#E3B45A; --warn-soft:#3B2E10; --bad:#F08A96; --bad-soft:#3F1B21;
+    --code-bg:#0A0F14; --code-ink:#DCE4EC; --code-accent:#7FD8DD; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F151B; --surface:#161E27; --surface-2:#1E2832; --ink:#E6ECF2; --ink-2:#B4BFCB; --ink-3:#8593A2;
+  --line:#2C3843; --accent:#4CC3C9; --accent-ink:#0B1A1B; --accent-soft:#143A3D;
+  --good:#6CCB86; --good-soft:#173722; --warn:#E3B45A; --warn-soft:#3B2E10; --bad:#F08A96; --bad-soft:#3F1B21;
+  --code-bg:#0A0F14; --code-ink:#DCE4EC; --code-accent:#7FD8DD; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;padding-block:0 4rem;padding-inline:16px}
+a{color:var(--accent);text-decoration-thickness:1px;text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto}
+header.hero{padding-block:3rem 2rem;border-bottom:1px solid var(--line)}
+.eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 .75rem}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(2rem,4.5vw,3.4rem);line-height:1.05;margin:0 0 1rem;text-wrap:balance;max-width:20ch}
+.lede{font-size:1.15rem;color:var(--ink-2);max-width:62ch;margin:0}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;margin-top:1.5rem;font-family:var(--mono);font-size:.8rem;color:var(--ink-3)}
+.layout{display:grid;grid-template-columns:1fr;gap:2rem;margin-top:2rem}
+@media (min-width:1000px){.layout{grid-template-columns:220px minmax(0,1fr)}}
+nav.toc{position:sticky;top:1rem;align-self:start;font-size:.9rem;display:none}
+@media (min-width:1000px){nav.toc{display:block}}
+nav.toc ol{list-style:none;margin:0;padding:0;border-left:2px solid var(--line)}
+nav.toc li a{display:block;padding:.3rem .9rem;color:var(--ink-2);text-decoration:none;border-left:2px solid transparent;margin-left:-2px}
+nav.toc li a:hover{color:var(--accent);border-left-color:var(--accent)}
+main{min-width:0;max-width:74ch}
+section{padding-block:2.25rem;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:0}
+h2{font-family:var(--display);font-weight:700;font-size:clamp(1.5rem,2.6vw,2rem);line-height:1.15;margin:0 0 1rem;text-wrap:balance}
+h3{font-family:var(--display);font-weight:600;font-size:1.2rem;margin:1.75rem 0 .5rem}
+p{margin:.75rem 0}
+ul,ol{padding-left:1.3rem}
+li{margin:.3rem 0}
+code{font-family:var(--mono);font-size:.9em;background:var(--surface-2);padding:.1em .35em;border-radius:4px}
+pre{background:var(--code-bg);color:var(--code-ink);font-family:var(--mono);font-size:.85rem;line-height:1.55;padding:1rem 1.1rem;border-radius:8px;overflow-x:auto;margin:1rem 0}
+pre code{background:none;padding:0;color:inherit;font-size:inherit}
+pre .c{color:#8FA3B5}
+pre .k{color:var(--code-accent)}
+pre .err{color:#F49CA6}
+pre .ok{color:#8CE0A3}
+.term{border-left:3px solid var(--bad)}
+.callout{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:1rem 1.2rem;margin:1.25rem 0}
+.callout.warn{border-left-color:var(--warn)}
+.callout.good{border-left-color:var(--good)}
+.callout p:first-child{margin-top:0}.callout p:last-child{margin-bottom:0}
+.callout strong{font-weight:600}
+.tbl{overflow-x:auto;margin:1rem 0;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{text-align:left;padding:.6rem .8rem;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;font-size:.8rem;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-2);background:var(--surface-2)}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+td.mono{font-family:var(--mono);font-size:.85rem}
+.pill{display:inline-block;font-family:var(--mono);font-size:.72rem;letter-spacing:.04em;padding:.15em .55em;border-radius:999px;white-space:nowrap}
+.pill.good{background:var(--good-soft);color:var(--good)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.bad{background:var(--bad-soft);color:var(--bad)}
+.timeline{list-style:none;padding:0;margin:1.25rem 0;border-left:2px solid var(--line)}
+.timeline li{position:relative;padding:.2rem 0 .9rem 1.4rem}
+.timeline li::before{content:"";position:absolute;left:-7px;top:.62rem;width:12px;height:12px;border-radius:50%;background:var(--surface);border:2px solid var(--accent)}
+.timeline li.today::before{background:var(--accent)}
+.timeline .d{font-family:var(--mono);font-size:.78rem;color:var(--ink-3);display:block}
+.options{display:grid;grid-template-columns:1fr;gap:1rem;margin:1.25rem 0}
+@media (min-width:720px){.options{grid-template-columns:repeat(3,1fr)}}
+.opt{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.4rem}
+.opt h3{margin:0;font-size:1.05rem}
+.opt .for{color:var(--ink-3);font-size:.85rem}
+.opt pre{margin:.5rem 0 0;font-size:.78rem}
+.kv{display:grid;grid-template-columns:max-content 1fr;gap:.35rem 1rem;font-size:.92rem;margin:1rem 0}
+.kv dt{font-family:var(--mono);color:var(--ink-3);font-size:.82rem;padding-top:.15rem}
+.kv dd{margin:0;min-width:0;overflow-wrap:anywhere}
+footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--line);color:var(--ink-3);font-size:.85rem}
+footer ul{columns:1;padding-left:1.2rem}
+@media (min-width:720px){footer ul{columns:2}}
+@media (prefers-reduced-motion:no-preference){a{transition:color .15s}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+  <p class="eyebrow">DATA 5630 / 6630 · Deep Forecasting · Utah State University</p>
+  <h1>PyCaret stopped working on Colab. Here is the fix.</h1>
+  <p class="lede">Google Colab moved to Python 3.13. The official <code>pycaret</code> package refuses to run on anything newer than 3.11. This guide shows what we tested, why the course now installs the community fork <code>pycaret-core</code>, and the three supported ways to run every PyCaret notebook in the course.</p>
+  <div class="meta"><span>Written 2026-09-16</span><span>Pedram Jahangiry</span><span>Verified on Colab, uv and conda</span></div>
+</header>
+
+<div class="layout">
+<nav class="toc" aria-label="Contents">
+  <ol>
+    <li><a href="#tldr">The short version</a></li>
+    <li><a href="#symptom">The symptom</a></li>
+    <li><a href="#timeline">How we got here</a></li>
+    <li><a href="#candidates">Three candidates</a></li>
+    <li><a href="#evidence">What we tested</a></li>
+    <li><a href="#ets">The ETS trap</a></li>
+    <li><a href="#runtime">The stale-runtime trap</a></li>
+    <li><a href="#run">How to run the notebooks</a></li>
+    <li><a href="#notebooks">What changed in the notebooks</a></li>
+    <li><a href="#leaderboard">Proof it works</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ol>
+</nav>
+
+<main>
+<section id="tldr">
+  <h2>The short version</h2>
+  <div class="callout good">
+    <p><strong>Install this instead of <code>pycaret</code>:</strong></p>
+    <pre><code>pip install pycaret-core "statsmodels&lt;0.15" lightgbm xgboost catboost</code></pre>
+    <p>Same <code>import pycaret</code>, same <code>TSForecastingExperiment</code>, same <code>setup / create_model / compare_models / plot_model</code>. Nothing else in the notebooks changes.</p>
+  </div>
+  <ul>
+    <li><strong>Official pycaret 3.3.2</strong> (April 2024) hard-codes a check that raises <code>RuntimeError</code> on Python 3.12 or newer. Colab is on 3.13. The upstream request for 3.12 support was closed as "not planned".</li>
+    <li><strong>pycaret-core 3.5.0</strong> (August 2026) is the community fork maintained by the sktime organisation. It keeps the PyCaret 3 API and supports Python 3.10 to 3.14. It is a drop-in replacement.</li>
+    <li><strong>pycaret 4.0</strong> (alpha) is a redesign. It renames the experiment class and removes <code>plot_model</code>, <code>check_stats</code> and the functional API. Every course notebook would need rewriting, so we are not going there yet.</li>
+    <li>One temporary pin: <code>statsmodels&lt;0.15</code>. Without it, <code>create_model('ets')</code> fails. Details below.</li>
+  </ul>
+</section>
+
+<section id="symptom">
+  <h2>The symptom</h2>
+  <p>The old install cell from the notebooks does this on Python 3.12:</p>
+<pre class="term"><code><span class="c"># Python 3.12 (local test)</span>
+$ pip install pycaret==3.3.2      <span class="ok"># succeeds, 104 packages</span>
+$ python -c "import pycaret"
+<span class="err">RuntimeError: ('Pycaret only supports python 3.9, 3.10, 3.11.
+  Your actual Python version: ', sys.version_info(major=3, minor=12, ...),
+  'Please DOWNGRADE your Python version.')</span></code></pre>
+  <p>The package installs, because its metadata only says <code>Requires-Python &gt;=3.9</code>. The refusal lives in <code>pycaret/__init__.py</code> and fires at import time. On Colab's actual Python 3.13 it is worse: pycaret 3.3.2 pins <code>numpy&lt;1.27</code>, and there are no numpy 1.26 wheels for 3.13, so pip tries to compile numpy from source and the install cell never finishes.</p>
+  <div class="callout warn">
+    <p><strong>Check your Python before trusting any docs.</strong> Colab's public runtime table still lists Python 3.12 as the latest, but a fresh runtime on 2026-09-16 reported <code>3.13.15</code>. Run <code>import sys; print(sys.version)</code> first.</p>
+  </div>
+</section>
+
+<section id="timeline">
+  <h2>How we got here</h2>
+  <ol class="timeline">
+    <li><span class="d">2024-04-28</span>pycaret <strong>3.3.2</strong> released. Last official stable release. Python 3.9 to 3.11.</li>
+    <li><span class="d">2025-02-08</span><strong>pycaret-core 3.4.0</strong> appears on PyPI, the community fork's first release, adding Python 3.12 support.</li>
+    <li><span class="d">2025-10</span>Google Colab default runtime moves to <strong>Python 3.12</strong>. <code>pip install pycaret</code> starts failing for students.</li>
+    <li><span class="d">2025-12-07</span>Upstream issue "Unable to use in Python version 3.12" opened, closed as <strong>not planned</strong>.</li>
+    <li><span class="d">2026-04-23</span>pycaret <strong>4.0.0a0</strong>, the first alpha of the redesign. 4.0.0a8 follows on 2026-05-08.</li>
+    <li><span class="d">2026-08-09</span><strong>pycaret-core 3.5.0</strong>: Python 3.13 and 3.14 support, "resumption of structured, community-led maintenance".</li>
+    <li><span class="d">2026-08-27</span><strong>statsmodels 0.15.0</strong> renames an argument in <code>ETSResults.simulate</code>. ETS forecasting through sktime breaks.</li>
+    <li><span class="d">2026-09-13</span>sktime merges the fix (PR 10972). Not yet released.</li>
+    <li class="today"><span class="d">2026-09-16</span>This guide. Colab is on Python 3.13.15. The course moves to pycaret-core with a statsmodels pin.</li>
+  </ol>
+</section>
+
+<section id="candidates">
+  <h2>Three candidates</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Package</th><th>Version</th><th>Python</th><th>API vs. course notebooks</th><th>Maintenance</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">pycaret</td><td class="mono">3.3.2</td><td class="mono">3.9 – 3.11</td><td>Identical (it is what the notebooks were written on)</td><td>Frozen since April 2024</td><td><span class="pill bad">dead on Colab</span></td></tr>
+      <tr><td class="mono">pycaret-core</td><td class="mono">3.5.0</td><td class="mono">3.10 – 3.14</td><td>Identical: same import name, same classes and functions</td><td>sktime organisation, MIT, released 2026-08-09</td><td><span class="pill good">adopted</span></td></tr>
+      <tr><td class="mono">pycaret --pre</td><td class="mono">4.0.0a8</td><td class="mono">3.11+</td><td>Breaking: <code>TSForecastingExperiment</code> renamed, functional API, <code>plot_model</code>, <code>check_stats</code> removed</td><td>Alpha, active</td><td><span class="pill warn">not yet</span></td></tr>
+    </tbody>
+  </table></div>
+  <h3>What pycaret-core actually pins</h3>
+  <p>The fork has two dependency branches, and the one you get depends on your Python version. This is why the course standardises on 3.13.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Python</th><th>numpy</th><th>pandas</th><th>scikit-learn</th><th>scipy</th><th>matplotlib</th><th>sktime</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">3.10 – 3.12</td><td class="mono">&lt;2.0</td><td class="mono">&lt;2.2</td><td class="mono">&lt;1.5</td><td class="mono">&lt;=1.11.4</td><td class="mono">&lt;3.8</td><td class="mono">&gt;=0.31</td></tr>
+      <tr><td class="mono">3.13 – 3.14</td><td class="mono">&gt;=2.0,&lt;3</td><td class="mono">&gt;=2.2</td><td class="mono">&gt;=1.5</td><td class="mono">&gt;=1.14</td><td class="mono">&gt;=3.8,&lt;3.11</td><td class="mono">&gt;=0.31</td></tr>
+    </tbody>
+  </table></div>
+  <p>On Python 3.12 the fork would drag Colab's numpy 2 and scikit-learn 1.6 back to 2023-era versions and force a runtime restart. On 3.13 it leaves Colab's preinstalled stack untouched. Either way, sktime jumps from 0.26 to 1.1.</p>
+  <h3>Why not 4.0 today</h3>
+  <p>The maintainers describe 4.0 as a redesign, not an increment. From their own status document: the functional API is gone, <code>TSForecastingExperiment</code> became <code>TimeSeriesExperiment</code>, and <code>plot_model</code>, <code>evaluate_model</code>, <code>check_stats</code>, <code>interpret_model</code>, <code>get_leaderboard</code> and <code>automl</code> are removed with "use plotly / sktime / statsmodels directly" as the migration advice. Time series support is an optional extra. On Colab it also conflicts with the notebook's own ipython pin. The first cell of every course notebook fails:</p>
+<pre class="term"><code>&gt;&gt;&gt; from pycaret.time_series import *
+&gt;&gt;&gt; exp = TSForecastingExperiment()
+<span class="err">NameError: name 'TSForecastingExperiment' is not defined</span></code></pre>
+</section>
+
+<section id="evidence">
+  <h2>What we tested</h2>
+  <p>A smoke script exercises the exact API surface the seven course notebooks use: <code>get_data('airline')</code>, <code>setup</code> with a coverage level, <code>create_model</code> for naive, seasonal naive, exponential smoothing, ETS, ARIMA, auto ARIMA and the tree-based reduced regressors, <code>compare_models</code> with cross-validation, <code>tune_model</code>, all four plot types, <code>predict_model</code>, <code>finalize_model</code>, <code>save_model</code> and <code>load_model</code>, the Module 5 <code>WindowSummarizer</code> feature-engineering path, and a SARIMAX experiment with exogenous variables.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Scenario</th><th>Where</th><th>Python</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">pycaret 3.3.2</td><td>conda env from 2024</td><td class="mono">3.11.9</td><td><span class="pill good">baseline, all pass</span></td></tr>
+      <tr><td class="mono">pycaret 3.3.2</td><td>local uv env</td><td class="mono">3.12.13</td><td><span class="pill bad">installs, import raises RuntimeError</span></td></tr>
+      <tr><td class="mono">pycaret 3.3.2</td><td>Colab</td><td class="mono">3.13.15</td><td><span class="pill bad">pip builds numpy from source, never finishes</span></td></tr>
+      <tr><td class="mono">pycaret-core 3.5.0</td><td>local uv env</td><td class="mono">3.12.13</td><td><span class="pill warn">all pass except ETS</span></td></tr>
+      <tr><td class="mono">pycaret-core 3.5.0</td><td>local uv env</td><td class="mono">3.13.5</td><td><span class="pill warn">all pass except ETS</span></td></tr>
+      <tr><td class="mono">pycaret-core 3.5.0 + statsmodels&lt;0.15</td><td>uv, conda, Colab</td><td class="mono">3.13</td><td><span class="pill good">all pass, 28 models compared</span></td></tr>
+      <tr><td class="mono">pycaret 4.0.0a8</td><td>local uv env and Colab</td><td class="mono">3.12 / 3.13</td><td><span class="pill bad">NameError on the first cell</span></td></tr>
+    </tbody>
+  </table></div>
+  <p>The Colab run of the fork changed nothing in the preinstalled stack except statsmodels (0.15.0 to 0.14.6) and added sktime 1.1.0 and catboost. No restart prompt.</p>
+</section>
+
+<section id="ets">
+  <h2>The ETS trap and the one pin</h2>
+  <p>With the fork installed and no pin, the very model Module 3 is built around fails:</p>
+<pre class="term"><code>&gt;&gt;&gt; exp.create_model('ets')
+<span class="err">TypeError: ETSResults.simulate() got an unexpected keyword argument 'random_state'</span></code></pre>
+  <p>Three things lined up. statsmodels 0.15.0 (2026-08-27) renamed the <code>random_state</code> argument of <code>ETSResults.simulate</code> to <code>rng</code>. sktime 1.1.0, which pycaret uses for every forecaster, still passes <code>random_state</code> when it builds prediction intervals. And nothing in the fork's dependency tree caps statsmodels, so a fresh install picks up 0.15.0. Colab preinstalls 0.15.0 too.</p>
+  <p>sktime merged the fix on 2026-09-13, but its latest release, 1.1.0, predates it. Until a newer sktime ships, the pin does the job:</p>
+  <div class="kv">
+    <dt>signature, 0.14.6</dt><dd><code>simulate(nsimulations, anchor, repetitions, random_errors, random_state)</code></dd>
+    <dt>signature, 0.15.0</dt><dd><code>simulate(nsimulations, anchor, repetitions, random_errors, rng)</code></dd>
+    <dt>fix</dt><dd><code>pip install "statsmodels&lt;0.15"</code>, which resolves to 0.14.6</dd>
+    <dt>drop the pin when</dt><dd>sktime releases a version newer than 1.1.0 that includes PR 10972, and the smoke test passes without it</dd>
+  </div>
+  <p>A subtle point worth showing students: <code>compare_models</code> does not raise. It silently drops ETS from the leaderboard when the model errors, so the failure only shows up in <code>create_model</code>, or as a missing row.</p>
+</section>
+
+<section id="runtime">
+  <h2>The stale-runtime trap</h2>
+  <p>This one caught us during testing and will catch students. Run the install cell in a Colab session where pycaret has already been imported, and the newly installed model libraries never show up:</p>
+<pre class="term"><code>&gt;&gt;&gt; exp.compare_models(include=[..., 'catboost_cds_dt'])
+<span class="err">ValueError: Estimator catboost_cds_dt Not Available.</span></code></pre>
+  <p>pycaret checks its optional model libraries once, at first import, and caches the answer. Installing catboost afterwards in the same kernel changes nothing, even after <code>importlib.invalidate_caches()</code>. A fresh interpreter sees it immediately. Two rules follow:</p>
+  <ul>
+    <li>Install everything before the first <code>import pycaret</code>.</li>
+    <li>On Colab, start from <em>Runtime &rarr; Disconnect and delete runtime</em>, then Run all. The tell-tale sign of a stale runtime is the "before install" cell already listing pycaret-core, or execution counters that do not start at 1.</li>
+  </ul>
+</section>
+
+<section id="run">
+  <h2>How to run the notebooks</h2>
+  <p>Three supported ways. All of them give you the same stack: Python 3.13, <code>pycaret-core 3.5.0</code>, <code>statsmodels&lt;0.15</code>, <code>lightgbm</code>, <code>xgboost</code>, <code>catboost</code>. Pick one.</p>
+  <div class="options">
+    <div class="opt">
+      <h3>1 · Google Colab</h3>
+      <span class="for">Zero install, any laptop</span>
+      <p>The notebooks now carry an install cell that runs only on Colab. Start from a fresh runtime and run it first.</p>
+<pre><code>!pip install -q pycaret-core \
+  "statsmodels&lt;0.15" \
+  lightgbm xgboost catboost</code></pre>
+    </div>
+    <div class="opt">
+      <h3>2 · uv</h3>
+      <span class="for">Local work, exact reproducibility</span>
+      <p>A locked project in <code>python_migration/uv</code>. 165 packages pinned; everyone gets identical versions.</p>
+<pre><code>cd python_migration/uv
+uv sync
+uv run jupyter lab</code></pre>
+    </div>
+    <div class="opt">
+      <h3>3 · conda</h3>
+      <span class="for">Already on Anaconda</span>
+      <p>An environment file in <code>python_migration/conda</code>. Same pins, installed with pip inside the env.</p>
+<pre><code>cd python_migration/conda
+conda env create -f environment.yml
+conda activate df_pycaret
+jupyter lab</code></pre>
+    </div>
+  </div>
+  <h3>VS Code</h3>
+  <p>Both local options work in VS Code with the Python and Jupyter extensions. For uv, register the environment once as a named kernel, then choose it from <em>Select Kernel &rarr; Jupyter Kernel</em> in any notebook:</p>
+<pre><code>uv run python -m ipykernel install --user --name df-pycaret --display-name "Python (df-pycaret)"</code></pre>
+  <p>For conda, VS Code discovers <code>df_pycaret</code> on its own under <em>Select Kernel &rarr; Python Environments</em>.</p>
+  <h3>Build times we measured</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Option</th><th class="num">Build</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Colab install cell</td><td class="num">~1 min</td><td>No restart on Python 3.13</td></tr>
+      <tr><td>uv sync</td><td class="num">19 s</td><td>Lock resolves in 2 s; first run also downloads Python 3.13</td></tr>
+      <tr><td>conda env create</td><td class="num">2 min 21 s</td><td>pycaret-core is not on conda-forge, so pip does the heavy lifting</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="notebooks">
+  <h2>What changed in the notebooks</h2>
+  <p>Seven notebooks run PyCaret: <em>All in one</em>, Module 3 ETS, Module 4 ARIMA and SARIMAX, Module 5 ML time series, and the two stock-market examples. In each, the old commented-out install line became a guarded cell that does nothing outside Colab:</p>
+<pre><code><span class="c"># Google Colab only - installs the course's PyCaret stack and does nothing elsewhere.</span>
+<span class="k">import</span> sys
+<span class="k">if</span> "google.colab" <span class="k">in</span> sys.modules:
+    !pip install -q pycaret-core "statsmodels&lt;0.15" lightgbm xgboost catboost</code></pre>
+  <p>The version check stays as it was and should now print <code>3.5.0</code>:</p>
+<pre><code><span class="k">from</span> pycaret.utils <span class="k">import</span> version
+version()   <span class="c"># -&gt; '3.5.0'</span></code></pre>
+  <p>Kernel metadata moved to the standard <code>python3</code>, so JupyterLab and VS Code stop asking for a kernel that only existed on the instructor's machine. All seven were re-executed top to bottom on the locked environment, and the saved model files were regenerated under sktime 1.1.0 rather than trusting pickles from sktime 0.26.</p>
+</section>
+
+<section id="leaderboard">
+  <h2>Proof it works: the Colab leaderboard</h2>
+  <p><code>compare_models()</code> on the airline passengers series, forecast horizon 12, 3-fold expanding-window cross-validation, run on a fresh Colab Python 3.13 runtime with the fork. 29 models available, 28 scored, 121 fits. Top and bottom rows shown, sorted by MAE.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Model</th><th class="num">MAE</th><th class="num">MAPE</th><th class="num">R²</th></tr></thead>
+    <tbody>
+      <tr><td>Exponential Smoothing</td><td class="num">16.78</td><td class="num">0.042</td><td class="num">0.895</td></tr>
+      <tr><td>ETS</td><td class="num">17.41</td><td class="num">0.044</td><td class="num">0.888</td></tr>
+      <tr><td>Extra Trees, cond. deseasonalize &amp; detrend</td><td class="num">19.66</td><td class="num">0.049</td><td class="num">0.847</td></tr>
+      <tr><td>ARIMA</td><td class="num">20.01</td><td class="num">0.050</td><td class="num">0.868</td></tr>
+      <tr><td>Huber, cond. deseasonalize &amp; detrend</td><td class="num">20.03</td><td class="num">0.049</td><td class="num">0.811</td></tr>
+      <tr><td>CatBoost, cond. deseasonalize &amp; detrend</td><td class="num">20.91</td><td class="num">0.051</td><td class="num">0.809</td></tr>
+      <tr><td>Auto ARIMA</td><td class="num">21.03</td><td class="num">0.053</td><td class="num">0.851</td></tr>
+      <tr><td>XGBoost, cond. deseasonalize &amp; detrend</td><td class="num">23.99</td><td class="num">0.058</td><td class="num">0.703</td></tr>
+      <tr><td>LightGBM, cond. deseasonalize &amp; detrend</td><td class="num">24.00</td><td class="num">0.058</td><td class="num">0.756</td></tr>
+      <tr><td>Seasonal Naive</td><td class="num">33.36</td><td class="num">0.083</td><td class="num">0.607</td></tr>
+      <tr><td>Naive</td><td class="num">69.03</td><td class="num">0.157</td><td class="num">-1.222</td></tr>
+      <tr><td>Grand Means</td><td class="num">162.41</td><td class="num">0.400</td><td class="num">-7.046</td></tr>
+    </tbody>
+  </table></div>
+  <p>ETS is back on the board, which is the whole point of the pin. The same experiment in the uv and conda environments produces the same ranking.</p>
+</section>
+
+<section id="faq">
+  <h2>FAQ</h2>
+  <h3>Can I keep using pycaret 3.3.2 locally?</h3>
+  <p>Yes, on Python 3.11 or older. The 2024 conda environment still passes every test. It just cannot be the Colab path, and the last Python 3.11 Colab runtime has aged out of Colab's one-year window.</p>
+  <h3>Do I have to uninstall pycaret before installing pycaret-core?</h3>
+  <p>In a fresh environment there is nothing to uninstall. In an existing one, yes: both packages install into the same <code>pycaret</code> import namespace, and two copies on top of each other is undefined behaviour.</p>
+  <h3>Why Python 3.13 and not 3.12?</h3>
+  <p>Because of the fork's two dependency branches. On 3.12 it pins numpy below 2 and scikit-learn below 1.5, which fights with everything else in a modern environment, including the course's Nixtla notebooks. On 3.13 it uses current versions. It also matches Colab.</p>
+  <h3>When does the statsmodels pin go away?</h3>
+  <p>When sktime publishes a release newer than 1.1.0 containing PR 10972. Test by removing the pin from <code>pyproject.toml</code>, running <code>uv lock --upgrade-package sktime --upgrade-package statsmodels</code>, and re-running <code>python_migration/uv/check_environment.py</code>, which trains an ETS model on purpose.</p>
+  <h3>What if the fork stalls?</h3>
+  <p>Modules 3, 4 and 5 already have StatsForecast and MLForecast versions of the same lessons. That is the exit path. For now the fork is five weeks into resumed maintenance under the sktime organisation, which is a reasonable bet for a semester.</p>
+</section>
+
+<footer>
+  <p>Evidence, scripts, executed test notebooks and environment files live in <code>python_migration/</code> in the course repository. Sources checked on 2026-09-16:</p>
+  <ul>
+    <li><a href="https://pypi.org/project/pycaret/">pycaret on PyPI</a></li>
+    <li><a href="https://pypi.org/project/pycaret-core/">pycaret-core on PyPI</a></li>
+    <li><a href="https://github.com/sktime/pycaret">sktime/pycaret, the fork</a></li>
+    <li><a href="https://github.com/pycaret/pycaret/issues/4173">pycaret issue 4173, Python 3.12</a></li>
+    <li><a href="https://github.com/pycaret/pycaret/blob/main/docs/revamp/STATUS.md">pycaret 4.0 status document</a></li>
+    <li><a href="https://github.com/sktime/sktime/pull/10972">sktime PR 10972, statsmodels 0.15 fix</a></li>
+    <li><a href="https://research.google.com/colaboratory/runtime-version-faq.html">Colab runtime versions</a></li>
+    <li><a href="https://www.statsmodels.org/stable/generated/statsmodels.tsa.exponential_smoothing.ets.ETSResults.simulate.html">statsmodels ETSResults.simulate</a></li>
+  </ul>
+</footer>
+</main>
+</div>
+</div>
+</body>
+</html>

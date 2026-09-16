@@ -6,10 +6,12 @@
 
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=flat-square&logo=github)](https://github.com/PJalgotrader/Deep_forecasting-USU)
 [![Colab](https://img.shields.io/badge/Google%20Colab-Ready-F9AB00?style=flat-square&logo=googlecolab)](https://colab.research.google.com)
-[![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![Python](https://img.shields.io/badge/Python-3.11%20%7C%203.13-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 
 > [!IMPORTANT]
 > Choose the setup that works best for you: Google Colab, `uv`, or Conda. If you are unsure, begin with Google Colab or the small `uv` test below.
+>
+> **PyCaret changed in 2026.** The official `pycaret` package no longer runs on Colab's Python. The course now uses the community fork `pycaret-core`; the notebooks already carry the right install cell. Read [`python_migration/`](python_migration/) and its [tutorial](python_migration/tutorial.html) if you want the details.
 
 ---
 
@@ -89,7 +91,7 @@ For students needing a refresher, we provide a comprehensive [Python Crash Cours
 ## 🛠️ Tools and Platforms
 
 ### Primary Frameworks
-- **[PyCaret](Platforms%20and%20tools/PyCaret/)**: AutoML for time series
+- **[PyCaret](Platforms%20and%20tools/PyCaret/)**: AutoML for time series, installed as [`pycaret-core`](python_migration/) since 2026
 - **[Nixtla](https://nixtlaverse.nixtla.io/)**: Statistical, machine-learning, and neural forecasting libraries
 - **[TensorFlow/Keras](https://www.tensorflow.org/)**: Deep learning
 - **[Prophet/NeuralProphet](https://facebook.github.io/prophet/)**: Scalable forecasting
@@ -126,7 +128,9 @@ Choose **one** of the following paths. If you are unsure, use Google Colab. It r
 3. Sign in with your Google account.
 4. Run cells from top to bottom with `Shift+Enter`.
 
-Colab is recommended when you want GPU access or cannot install software on your computer. Package-install cells inside notebooks are intended for Colab.
+Colab is recommended when you want GPU access or cannot install software on your computer. Package-install cells inside notebooks are intended for Colab and run only there.
+
+For the PyCaret notebooks (Modules 3, 4, 5 and the stock-market examples), always start from **Runtime → Disconnect and delete runtime** and run the install cell first. PyCaret decides which model libraries exist the moment it is imported, so installing after importing leaves models missing.
 
 ### Option 2: uv — recommended local setup
 
@@ -215,15 +219,15 @@ Your browser will open JupyterLab. Open a notebook and run its cells from top to
 
 #### PyCaret notebooks
 
-PyCaret uses a separate environment because its full installation requires older versions of some forecasting packages. When the course reaches a PyCaret notebook, run:
+PyCaret uses a separate environment because it pins older versions of some forecasting packages. Since 2026 it installs the community fork `pycaret-core` on Python 3.13 (the official `pycaret` 3.3.2 refuses to import on Python 3.12 or newer). When the course reaches a PyCaret notebook, run:
 
 ```bash
-uv sync --project environments/pycaret
-uv run --project environments/pycaret python environments/pycaret/check_environment.py
-uv run --project environments/pycaret jupyter lab
+uv sync --project python_migration/uv
+uv run --project python_migration/uv python python_migration/uv/check_environment.py
+uv run --project python_migration/uv jupyter lab
 ```
 
-If the check ends with **Your PyCaret environment is ready**, the installation worked. This environment uses Python 3.10 and does not change the main course environment. Exit JupyterLab before switching between the two environments.
+If the check ends with **Your PyCaret environment is ready**, the installation worked. This environment does not change the main course environment. Exit JupyterLab before switching between the two environments. Why the fork, what was tested, and the one temporary pin (`statsmodels<0.15`) are explained in [`python_migration/`](python_migration/).
 
 #### Use notebooks in VS Code
 
@@ -240,7 +244,7 @@ After synchronizing both environments, register them as named Jupyter kernels on
 ```bash
 uv run python -m ipykernel install --user --name deep-forecasting --display-name "Python 3.11 (Deep Forecasting)"
 
-uv run --project environments/pycaret python -m ipykernel install --user --name deep-forecasting-pycaret --display-name "Python 3.10 (Deep Forecasting PyCaret)"
+uv run --project python_migration/uv python -m ipykernel install --user --name df-pycaret --display-name "Python 3.13 (Deep Forecasting PyCaret)"
 ```
 
 In VS Code:
@@ -248,7 +252,7 @@ In VS Code:
 1. Open a notebook.
 2. Click **Select Kernel** in the upper-right corner.
 3. Choose **Python 3.11 (Deep Forecasting)** for regular course notebooks.
-4. Choose **Python 3.10 (Deep Forecasting PyCaret)** for PyCaret notebooks.
+4. Choose **Python 3.13 (Deep Forecasting PyCaret)** for PyCaret notebooks.
 
 VS Code remembers the kernel for each notebook. To confirm the active environment, run:
 
@@ -257,7 +261,7 @@ import sys
 print(sys.executable)
 ```
 
-The path should contain either the root `.venv` or `environments/pycaret/.venv`.
+The path should contain either the root `.venv` or `python_migration/uv/.venv`.
 
 #### Updating later
 
@@ -282,11 +286,12 @@ python -m jupyter lab
 #### PyCaret environment
 
 ```bash
-conda create -n deep-forecasting-pycaret python=3.10 -y
-conda activate deep-forecasting-pycaret
-python -m pip install -r environments/pycaret/requirements.txt
+conda env create -f python_migration/conda/environment.yml
+conda activate df_pycaret
 python -m jupyter lab
 ```
+
+This creates a Python 3.13 environment with `pycaret-core`. Details in [`python_migration/conda/`](python_migration/conda/).
 
 Use only one active Conda environment at a time. Run `conda deactivate` before switching environments.
 
@@ -294,7 +299,8 @@ Use only one active Conda environment at a time. Run `conda deactivate` before s
 
 - **`uv: command not found`**: close and reopen Terminal or PowerShell, then try `uv --version` again.
 - **Wrong Python version**: run `uv run python --version` from the repository root. It should report Python 3.11.
-- **PyCaret import error**: close JupyterLab and restart it using the two PyCaret commands above.
+- **PyCaret import error**: close JupyterLab and restart it using the PyCaret commands above. If the error says *Pycaret only supports python 3.9, 3.10, 3.11*, you installed the old official package; use `pycaret-core` (see [`python_migration/`](python_migration/)).
+- **`Estimator catboost_cds_dt Not Available`** on Colab: the runtime was reused. Runtime → Disconnect and delete runtime, then run the install cell first.
 - **Notebook uses the wrong kernel**: restart JupyterLab from the correct environment rather than installing packages inside the notebook.
 - **`code: command not found`**: install the VS Code shell command from the Command Palette, or open the repository with **File → Open Folder**.
 - **Local setup is taking too long**: use the notebook's Colab badge instead.

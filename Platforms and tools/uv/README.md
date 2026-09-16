@@ -11,3 +11,5 @@ uv run python main.py
 ```
 
 If you see **uv is working!**, your setup is ready.
+
+The course's PyCaret environment is a uv project too: see [`python_migration/uv`](../../python_migration/uv/).

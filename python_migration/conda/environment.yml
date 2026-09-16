@@ -1,0 +1,21 @@
+# Deep Forecasting (DATA 5630/6630) - PyCaret time-series environment
+# Replaces the old DF_environment.yml (Python 3.7, no pycaret).
+#   conda env create -f environment.yml
+#   conda activate df_pycaret
+name: df_pycaret
+channels:
+  - conda-forge
+dependencies:
+  - python=3.13
+  - pip
+  - jupyterlab>=4
+  - ipykernel
+  - ipywidgets
+  - pip:
+      # community fork of PyCaret 3 - same `import pycaret`, same TSForecastingExperiment API
+      - pycaret-core==3.5.0
+      # pinned until sktime > 1.1.0 ships the statsmodels-0.15 fix (sktime PR 10972)
+      - statsmodels>=0.14,<0.15
+      - lightgbm>=4.0
+      - xgboost>=2.0
+      - catboost>=1.2
