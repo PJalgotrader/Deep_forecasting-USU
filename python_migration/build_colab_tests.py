@@ -1,6 +1,6 @@
-"""Builds the three Colab test notebooks (run each in a FRESH Colab runtime)."""
+"""Builds the three Colab test notebooks into colab/colab_tests/ (run each in a FRESH Colab runtime)."""
 import nbformat as nbf, pathlib
-out = pathlib.Path(__file__).parent / "colab_tests"
+out = pathlib.Path(__file__).parent / "colab" / "colab_tests"
 
 ENV_CELL = '''import sys, importlib.metadata as md
 print("Python:", sys.version.split()[0])

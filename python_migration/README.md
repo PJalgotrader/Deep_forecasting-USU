@@ -21,8 +21,8 @@ All three install the same thing: Python 3.13, `pycaret-core==3.5.0`, `statsmode
 
 ## Folder map
 
-- `colab/`, `uv/`, `conda/` - the three options above (`uv/` is the locked environment; `uv/check_environment.py` verifies it)
-- `colab_tests/` - the three Colab notebooks used to test official 3.3.2 vs pycaret-core 3.5.0 vs pycaret 4.0 pre-release (executed outputs included)
+- `colab/`, `uv/`, `conda/` - the three options above (`uv/` is the locked environment; `uv/check_environment.py` verifies it; `colab/colab_tests/` holds the executed Colab test notebooks)
+- `colab/colab_tests/` - the three Colab notebooks used to test official 3.3.2 vs pycaret-core 3.5.0 vs pycaret 4.0 pre-release (executed outputs included)
 - `tutorial.html` - the tutorial page: what broke, what we tested, the traps, how to run
 - New to uv? [`Platforms and tools/uv/conda_to_uv_student_cheatsheet.html`](../Platforms%20and%20tools/uv/conda_to_uv_student_cheatsheet.html)
-- `build_colab_tests.py` - regenerates `colab_tests/`
+- `build_colab_tests.py` - regenerates `colab/colab_tests/`
