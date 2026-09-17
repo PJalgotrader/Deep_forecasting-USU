@@ -2,7 +2,7 @@
 name = "uv-simple-test"
 version = "0.1.0"
 description = "A tiny uv installation test for DATA 5630 students"
-requires-python = ">=3.11,<3.12"
+requires-python = ">=3.13,<3.14"
 dependencies = [
     "rich>=15,<16",
 ]

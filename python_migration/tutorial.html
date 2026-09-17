@@ -262,8 +262,8 @@ $ python -c "import pycaret"
     <div class="opt">
       <h3>2 · uv</h3>
       <span class="for">Local work, exact reproducibility</span>
-      <p>A locked project in <code>python_migration/uv</code>. 165 packages pinned; everyone gets identical versions.</p>
-<pre><code>cd python_migration/uv
+      <p>The repository root is a locked uv project covering Modules 2 to 5. 180 packages pinned; everyone gets identical versions.</p>
+<pre><code>cd Deep_forecasting-USU
 uv sync
 uv run jupyter lab</code></pre>
     </div>
@@ -279,7 +279,7 @@ jupyter lab</code></pre>
   </div>
   <h3>VS Code</h3>
   <p>Both local options work in VS Code with the Python and Jupyter extensions. For uv, register the environment once as a named kernel, then choose it from <em>Select Kernel &rarr; Jupyter Kernel</em> in any notebook:</p>
-<pre><code>uv run python -m ipykernel install --user --name df-pycaret --display-name "Python (df-pycaret)"</code></pre>
+<pre><code>uv run python -m ipykernel install --user --name deep-forecasting --display-name "Python 3.13 (Deep Forecasting)"</code></pre>
   <p>For conda, VS Code discovers <code>df_pycaret</code> on its own under <em>Select Kernel &rarr; Python Environments</em>.</p>
   <h3>Build times we measured</h3>
   <div class="tbl"><table>
@@ -337,7 +337,7 @@ version()   <span class="c"># -&gt; '3.5.0'</span></code></pre>
   <h3>Why Python 3.13 and not 3.12?</h3>
   <p>Because of the fork's two dependency branches. On 3.12 it pins numpy below 2 and scikit-learn below 1.5, which fights with everything else in a modern environment, including the course's Nixtla notebooks. On 3.13 it uses current versions. It also matches Colab.</p>
   <h3>When does the statsmodels pin go away?</h3>
-  <p>When sktime publishes a release newer than 1.1.0 containing PR 10972. Test by removing the pin from <code>pyproject.toml</code>, running <code>uv lock --upgrade-package sktime --upgrade-package statsmodels</code>, and re-running <code>python_migration/uv/check_environment.py</code>, which trains an ETS model on purpose.</p>
+  <p>When sktime publishes a release newer than 1.1.0 containing PR 10972. Test by removing the pin from <code>pyproject.toml</code>, running <code>uv lock --upgrade-package sktime --upgrade-package statsmodels</code>, and re-running <code>scripts/check_environment.py</code>, which trains an ETS model on purpose.</p>
   <h3>What if the fork stalls?</h3>
   <p>Modules 3, 4 and 5 already have StatsForecast and MLForecast versions of the same lessons. That is the exit path. For now the fork is five weeks into resumed maintenance under the sktime organisation, which is a reasonable bet for a semester.</p>
 </section>

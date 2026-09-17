@@ -1,41 +1,63 @@
-"""Small, student-friendly check for the main course environment."""
+"""Student-friendly check for the course's single local environment (Modules 2-5).
+
+Run from the repository root:
+
+    uv run python scripts/check_environment.py
+"""
 
 from importlib import import_module
 from sys import version_info
+import warnings
 
-import numpy as np
-from statsmodels.tsa.holtwinters import ExponentialSmoothing
-
+warnings.filterwarnings("ignore")
 
 PACKAGES = {
     "JupyterLab": "jupyterlab",
     "pandas": "pandas",
+    "NumPy": "numpy",
     "scikit-learn": "sklearn",
     "statsmodels": "statsmodels",
-    "StatsForecast": "statsforecast",
-    "MLForecast": "mlforecast",
-    "NeuralForecast": "neuralforecast",
-    "TensorFlow": "tensorflow",
-    "Keras": "keras",
-    "Prophet": "prophet",
-    "NeuralProphet": "neuralprophet",
+    "sktime": "sktime",
+    "PyCaret (pycaret-core)": "pycaret",
+    "LightGBM": "lightgbm",
+    "XGBoost": "xgboost",
+    "CatBoost": "catboost",
+    "seaborn": "seaborn",
+    "yfinance": "yfinance",
 }
 
 
 def main() -> None:
     print(f"Python {version_info.major}.{version_info.minor}.{version_info.micro}")
+    if (version_info.major, version_info.minor) != (3, 13):
+        raise RuntimeError("This environment should run Python 3.13. Run `uv sync` from the repository root.")
     for label, module_name in PACKAGES.items():
         module = import_module(module_name)
-        package_version = getattr(module, "__version__", "installed")
-        print(f"[OK] {label}: {package_version}")
+        print(f"[OK] {label}: {getattr(module, '__version__', 'installed')}")
 
-    observations = np.array([10, 12, 13, 15, 16, 18, 20, 21], dtype=float)
-    model = ExponentialSmoothing(observations, trend="add").fit()
-    forecast = model.forecast(2)
-    if not np.isfinite(forecast).all():
-        raise RuntimeError("The sample forecast did not produce finite values.")
-    print(f"[OK] Sample forecast: {forecast.round(2).tolist()}")
-    print("\nYour main course environment is ready.")
+    import numpy as np
+    import pandas as pd
+    from pycaret.time_series import TSForecastingExperiment
+
+    observations = pd.Series(
+        20 + np.arange(48) * 0.4 + np.sin(np.arange(48) * 2 * np.pi / 12),
+        index=pd.period_range("2022-01", periods=48, freq="M"),
+    )
+    experiment = TSForecastingExperiment()
+    experiment.setup(data=observations, fh=3, session_id=123, verbose=False)
+    # 'ets' is the model that breaks when statsmodels >= 0.15 sneaks in, so it is the one we test.
+    model = experiment.create_model("ets", cross_validation=False, verbose=False)
+    forecast = experiment.predict_model(model, verbose=False)
+    if len(forecast) != 3 or not np.isfinite(forecast["y_pred"]).all():
+        raise RuntimeError("The PyCaret sample forecast did not complete correctly.")
+    print(f"[OK] Sample ETS forecast: {forecast['y_pred'].round(2).tolist()}")
+
+    available = set(experiment.models().index)
+    for name in ("lightgbm_cds_dt", "xgboost_cds_dt", "catboost_cds_dt"):
+        if name not in available:
+            raise RuntimeError(f"{name} is not available. Delete .venv and run `uv sync` again.")
+    print("[OK] LightGBM / XGBoost / CatBoost forecasters available")
+    print("\nYour course environment is ready.")
 
 
 if __name__ == "__main__":

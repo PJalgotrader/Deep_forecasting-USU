@@ -6,9 +6,10 @@
 cd python_migration/conda
 conda env create -f environment.yml
 conda activate df_pycaret
+python ../../scripts/check_environment.py   # should end with "Your course environment is ready."
 ```
 
-Everything except Python and Jupyter is installed with pip inside the env, because `pycaret-core` is not packaged on conda-forge. The pins match the uv option, but conda does not lock transitive packages, so the uv option is the reproducible one.
+This is the conda alternative to the uv environment at the repository root; it covers Modules 2–5. Everything except Python and Jupyter is installed with pip inside the env, because `pycaret-core` is not packaged on conda-forge. The pins match the uv option, but conda does not lock transitive packages, so the uv option is the reproducible one.
 
 ## 2a. Run notebooks in JupyterLab
 

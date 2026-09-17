@@ -12,4 +12,4 @@ uv run python main.py
 
 If you see **uv is working!**, your setup is ready.
 
-The course's PyCaret environment is a uv project too: see [`python_migration/uv`](../../python_migration/uv/).
+The course environment itself is the **repository root**: from the top folder run `uv sync`, then `uv run python scripts/check_environment.py`. Details in the root [`README.md`](../../README.md).

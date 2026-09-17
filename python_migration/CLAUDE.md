@@ -7,7 +7,7 @@ Read `README.md` for the student-facing story; this file is for whoever works on
 
 **Where things live:** the repo copy of this folder holds the three options, the tutorial and the Colab test notebooks. The `evidence/` folder (smoke logs, uv resolutions, Colab leaderboard CSV), `video_script.md`, `build_colab_tests.py` (regenerates `colab/colab_tests/`, wiping their outputs), and `backup_notebooks_2026-09-16/` referenced below stay on Pedram's Drive at `DF Lectures/python_migration/` and are deliberately not committed.
 
-In the repo the uv option replaced the old `environments/pycaret/` project (`git mv`, 2026-09-16); the main course env at the repo root (Python 3.11, no pycaret) is unchanged.
+In the repo the uv environment is the **repository root** (single env for Modules 2-5, Python 3.13) since the night of 2026-09-16; before that it lived in `environments/pycaret/`, then briefly in `python_migration/uv/`.
 
 ## Decisions (do not re-litigate)
 
@@ -17,7 +17,7 @@ In the repo the uv option replaced the old `environments/pycaret/` project (`git
 | Pin **`statsmodels<0.15`** | statsmodels 0.15.0 (2026-08-27) renamed `ETSResults.simulate(random_state=)` to `rng=`; sktime 1.1.0 still passes `random_state`, so `create_model('ets')` fails. Fix merged in sktime PR 10972 on 2026-09-13, not released yet | `evidence/ets_only.py` run in `smoke_results.log` |
 | **Not pycaret 4.0** (4.0.0a8, May 2026) | Rewrite: `TSForecastingExperiment` -> `TimeSeriesExperiment`, functional API, `plot_model`, `check_stats`, `evaluate_model` removed; also breaks Colab's ipython pin | `colab/colab_tests/C_*.ipynb`, `evidence/smoke_v4.py` |
 | **Python 3.13** for uv and conda | Matches Colab (3.13.15 on 2026-09-16) and puts the fork on its numpy 2 branch. On Python < 3.13 the fork pins numpy<2, pandas<2.2, scikit-learn<1.5, which clashes with the Nixtla notebooks | `evidence/out_pycaret-core__3_5_0_3.1{2,3}.txt` |
-| Keep pycaret in its **own environment** | Because of the pins above; the Nixtla/statsforecast notebooks stay in their own env | question bank m2_p1 Q17 already says this |
+| **One local environment, at the repo root** (2026-09-16 night; supersedes "pycaret in its own environment") | Two uv projects confused students. Pedram's call: Modules 6-7 run on Colab anyway (GPU), Module 8 is optional with its own Colab/conda path, Nixtla is final-project material with its own `requirements.txt`. So the root env = pycaret-core stack + seaborn, yfinance, fredapi, openpyxl, xlrd, lxml, html5lib, shap; Python 3.13; ~1.3 GB; `python-preference = "only-managed"` | `scripts/check_environment.py`; notebooks re-executed on the root env |
 | **shap added to the uv env** (2026-09-16, step 7) | `Platforms and tools/PyCaret/PyCaret-RegressionDemo.ipynb` calls `interpret_model`, which needs shap; the old `environments/pycaret` had it through `pycaret[full]`. Not added to the Colab line or conda file (time-series notebooks never need it) | regression demo re-run on the fork |
 | **lightgbm, xgboost, catboost listed explicitly** in all three options | So `compare_models()` shows the same rows everywhere; lightgbm is a hard dep of pycaret-core but Pedram wants it guaranteed | `evidence/step2_*_models.log` |
 
@@ -78,7 +78,7 @@ Two copies exist on purpose; keep them equal where they overlap.
 | Item | Source of truth | Copy | How to sync |
 |---|---|---|---|
 | Course notebooks (Modules 3, 4, 5, stock market) | Drive `DF Lectures/...` | repo `Lectures and codes/...` | copy, then fix the `python_migration/README.md` relative link depth (repo is one folder deeper) and the Colab badge URL |
-| `python_migration/uv/pyproject.toml` + `uv.lock` | repo | Drive `python_migration/uv/` | copy both files after `uv lock` (Drive `uv/` is a mirror; do not `uv sync` inside Drive) |
+| root `pyproject.toml` + `uv.lock` + `.python-version` | repo root | Drive `python_migration/uv/` | copy the three files after `uv lock` (Drive `uv/` is a mirror; do not `uv sync` inside Drive) |
 | `tutorial.html` | either (identical) | the other | copy; no repo-only references left in it |
 | uv cheat sheet HTML + PDF | Drive `python_migration/` | repo `Platforms and tools/uv/` | copy HTML, regenerate PDF (`msedge --headless=new --print-to-pdf`) |
 | Module 2 deck | Drive `Module 2- Setting up Deep Forecasting Environment/*.pptx` | repo PDF only | export PDF with PowerPoint (COM `SaveAs(path, 32)`), copy to `Lectures and codes/Module 2- Setting up DF environment/Module 2-DF environment.pdf` |
@@ -92,3 +92,16 @@ Two copies exist on purpose; keep them equal where they overlap.
 - The question bank PDF builder had a font path from a Codex sandbox on another machine; it now falls back to matplotlib's DejaVu fonts. If reportlab complains about fonts again, that block is the place to look.
 - `nbconvert --execute` on Windows prints joblib/loky `KeyError ... resource_tracker` noise at shutdown; it is not a failure. Use `--allow-errors` only for the SARIMAX notebook's intentional exogenous-variables error.
 - python-pptx: edit `run.text`, never `text_frame.text`, to keep the deck's fonts and colours; borrow the deck's own title text box (deepcopy of the shape element) when adding a slide so it matches.
+
+## Single root environment (2026-09-16, night)
+
+What changed after the evening investigation: the repository now has **one** uv project, at the root, for Modules 2-5.
+
+- Root `pyproject.toml` / `uv.lock` / `.python-version` (3.13) / `requirements.txt` replaced the old Python 3.11 main env (TensorFlow, torch, Prophet, NeuralProphet, Nixtla, transformers are gone from it). 180 packages, ~1.3 GB. `[tool.uv] python-preference = "only-managed"` keeps uv off Anaconda's interpreter on Windows.
+- `scripts/check_environment.py` is the single checker (Python 3.13, imports, an ETS fit on purpose, the three boosting forecasters). `python_migration/uv/` lost its project files and is now a README pointing at the root.
+- `python_migration/conda/environment.yml` gained the same utilities + shap; local conda env `df_pycaret` updated and passes the same checker.
+- `Platforms and tools/uv/simple_test` moved to Python 3.13 so students download one Python, not two.
+- Docs updated everywhere the old layout was mentioned: root README (module-to-setup table, one kernel "Python 3.13 (Deep Forecasting)", Module 6-7 Colab, Module 8 own env), python_migration README, uv pointer, conda README, tools/uv README, tutorial.html, the uv cheat sheet (HTML + PDF), Module 2 slide 8 (+ PDF), video script, question bank Q17 (+ PDF).
+- Module 8 local recipe in the README: `conda create -n df-prophet python=3.11`, then `pip install prophet neuralprophet jupyterlab` (NeuralProphet needs Python <= 3.12 and NumPy < 2).
+- Known notebook issues found while testing, NOT fixed (outside this scope): `Module6_UnivariateTS_DNN` NumPy 2.4 scalar assignment; `Module6-DNN_tensorflow` needs `pydot` for `plot_model`; nixtla `Module6_UnivariateTS_DNN_nixtla` uses `cpus=` removed in neuralforecast 3.2; `prediction_intervals` imports `MapieTimeSeriesRegressor` removed in mapie 1.x; `Univariate forecasting_plots_TensorFlow_approach` has an undefined `df_norm`; `Module7_Multivariate_RNN_LSTM` needs `jena_climate_2009_2016.csv`, which is not in the repo.
+- All scratch environments from the day were deleted (`%TEMP%\onenv`, `%TEMP%\pcsmoke`, `%TEMP%\rootenv_test`, `%TEMP%\pycaret_demo_tests`, `%TEMP%\m2slides`). Kept on purpose: the repo's root `.venv` (the real course env) and conda `df_pycaret` / `deep_forecasting`.

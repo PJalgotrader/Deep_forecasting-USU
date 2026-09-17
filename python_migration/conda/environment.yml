@@ -1,4 +1,4 @@
-# Deep Forecasting (DATA 5630/6630) - PyCaret time-series environment
+# Deep Forecasting (DATA 5630/6630) - the course environment for Modules 2-5 (conda alternative to `uv sync`)
 # Replaces the old DF_environment.yml (Python 3.7, no pycaret).
 #   conda env create -f environment.yml
 #   conda activate df_pycaret
@@ -19,3 +19,12 @@ dependencies:
       - lightgbm>=4.0
       - xgboost>=2.0
       - catboost>=1.2
+      - shap>=0.46
+      # utilities used by the Module 2-5 notebooks and the Python crash course
+      - seaborn>=0.13
+      - yfinance>=0.2
+      - fredapi>=0.5
+      - openpyxl>=3.1
+      - xlrd>=2
+      - lxml>=5
+      - html5lib>=1.1

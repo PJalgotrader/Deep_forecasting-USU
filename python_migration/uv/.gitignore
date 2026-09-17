@@ -1,4 +1,0 @@
-.venv/
-logs.log
-catboost_info/
-*.pkl

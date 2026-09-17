@@ -263,7 +263,7 @@
         lists the packages you asked for. This is the course's real one, trimmed:
       </p>
       <pre><code>[project]
-name = "df-pycaret-env"
+name = "deep-forecasting-course"
 version = "2026.9"
 requires-python = ">=3.13,&lt;3.14"      <span class="c"># which Python this project needs</span>
 dependencies = [
@@ -319,7 +319,7 @@ dependencies = [
           <h3>A. Someone gives you a project (this course)</h3>
           <p>The project already has <code>pyproject.toml</code> and <code>uv.lock</code>. You do not create anything, you rebuild it:</p>
           <pre><code>git clone https://github.com/PJalgotrader/Deep_forecasting-USU.git
-cd Deep_forecasting-USU/python_migration/uv
+cd Deep_forecasting-USU
 uv sync
 uv run jupyter lab</code></pre>
           <p class="small">First <code>uv sync</code> also downloads Python 3.13 if you do not have it. Later ones take seconds.</p>
@@ -414,7 +414,7 @@ uv tree                      <span class="c"># show the dependency tree</span></
       <div class="warn">
         <strong>Careful in a shared project.</strong> <code>uv lock --upgrade</code> rewrites <code>uv.lock</code>.
         In this course, that file is maintained by the instructor. Run upgrades in your own projects, not in
-        <code>python_migration/uv</code>, or you will drift away from what the notebooks were tested on.
+        the course repository, or you will drift away from what the notebooks were tested on.
       </div>
     </section>
 
@@ -447,12 +447,12 @@ uv run python --version       <span class="c"># confirm which one the project us
 
       <h3>VS Code / Cursor, notebooks somewhere else (this course)</h3>
       <p>
-        The course notebooks live in the Module folders, not inside <code>python_migration/uv</code>. Register the
+        The course's <code>.venv</code> sits at the top of the repository while the notebooks live in the Module folders. Register the
         environment once as a named kernel, and it shows up in every notebook, wherever it is:
       </p>
-      <pre><code>cd python_migration/uv
-uv run python -m ipykernel install --user --name df-pycaret --display-name "Python (df-pycaret)"</code></pre>
-      <p>Then in any notebook: <strong>Select Kernel → Jupyter Kernel → Python (df-pycaret)</strong>.</p>
+      <pre><code>cd Deep_forecasting-USU
+uv run python -m ipykernel install --user --name deep-forecasting --display-name "Python 3.13 (Deep Forecasting)"</code></pre>
+      <p>Then in any notebook: <strong>Select Kernel → Jupyter Kernel → Python 3.13 (Deep Forecasting)</strong>.</p>
     </section>
 
     <section class="card" id="disk">
@@ -534,17 +534,17 @@ uv cache clean    <span class="c"># delete the whole cache (safe, next sync re-d
     <section class="card" id="course">
       <h2>12. This course's project, start to finish</h2>
       <pre><code><span class="c"># once</span>
-cd python_migration/uv
+cd Deep_forecasting-USU
 uv sync
-uv run python -m ipykernel install --user --name df-pycaret --display-name "Python (df-pycaret)"
+uv run python -m ipykernel install --user --name deep-forecasting --display-name "Python 3.13 (Deep Forecasting)"
 
 <span class="c"># every time</span>
-uv run jupyter lab            <span class="c"># or open a notebook in VS Code and pick "Python (df-pycaret)"</span>
+uv run jupyter lab            <span class="c"># or open a notebook in VS Code and pick "Python 3.13 (Deep Forecasting)"</span>
 
 <span class="c"># check</span>
-uv run python -c "from pycaret.utils import version; print(version())"   <span class="c"># 3.5.0</span></code></pre>
+uv run python scripts/check_environment.py   <span class="c"># ends with "Your course environment is ready."</span></code></pre>
       <p class="small">
-        Do not run <code>uv add</code>, <code>uv remove</code>, or <code>uv lock --upgrade</code> inside this folder
+        Do not run <code>uv add</code>, <code>uv remove</code>, or <code>uv lock --upgrade</code> in the course repository
         unless the instructor asks. The lock file is what makes your leaderboard match the one in the lecture.
       </p>
     </section>
