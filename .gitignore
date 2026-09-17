@@ -8,3 +8,7 @@ logs.log
 catboost_info/
 lightning_logs/
 Platforms and tools/PyCaret/my_pycaret_*.pkl
+
+
+# My personal course notes and homework
+my_hw/
