@@ -1,4 +1,6 @@
 .DS_Store
+Thumbs.db
+.ipynb_checkpoints/
 .venv/
 __pycache__/
 *.py[cod]
@@ -13,13 +15,5 @@ Platforms and tools/PyCaret/my_pycaret_*.pkl
 # =========================================================================
 # Course Student Homework Setup
 # =========================================================================
-# Ignore the student homework folder completely
+# Ignore the student homework folder and everything inside it
 my_hw/
-
-# Ignore any subdirectories or hidden files created inside it
-my_hw/**/*
-
-# Prevent OS and Jupyter checkpoint leaks from the homework directory
-my_hw/**/.ipynb_checkpoints/
-my_hw/**/.DS_Store
-my_hw/**/Thumbs.db
