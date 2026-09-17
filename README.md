@@ -327,8 +327,6 @@ This course material is freely available for educational purposes. All rights re
 ## 🙏 Acknowledgments
 
 Special thanks to:
-- The Huntsman School of Business for supporting this course
-- The Analytics Solutions Center team
 - All students and contributors who have helped improve this material
 - The open-source community for the amazing tools and libraries
 
