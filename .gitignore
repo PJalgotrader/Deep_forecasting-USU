@@ -10,5 +10,16 @@ lightning_logs/
 Platforms and tools/PyCaret/my_pycaret_*.pkl
 
 
-# My personal course notes and homework
+# =========================================================================
+# Course Student Homework Setup
+# =========================================================================
+# Ignore the student homework folder completely
 my_hw/
+
+# Ignore any subdirectories or hidden files created inside it
+my_hw/**/*
+
+# Prevent OS and Jupyter checkpoint leaks from the homework directory
+my_hw/**/.ipynb_checkpoints/
+my_hw/**/.DS_Store
+my_hw/**/Thumbs.db
