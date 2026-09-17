@@ -222,6 +222,8 @@ git pull
 uv sync
 ```
 
+Your own work is not touched by `git pull` as long as it lives in [`my_hw/`](#-your-homework-folder-my_hw).
+
 ### Option 3: Conda — supported alternative (Modules 2–5)
 
 If you already use Anaconda or Miniconda:
@@ -267,6 +269,41 @@ The official `pycaret` 3.3.2 package refuses to import on Python 3.12 or newer, 
 - **Local setup is taking too long**: use the notebook's Colab badge instead.
 
 For additional `uv` help, see the official [`uv` installation guide](https://docs.astral.sh/uv/getting-started/installation/) and [Jupyter integration guide](https://docs.astral.sh/uv/guides/integration/jupyter/).
+
+---
+
+## 📝 Your Homework Folder: `my_hw/`
+
+If you work locally, keep your homework inside a folder named `my_hw` at the repository root. Create it once:
+
+```bash
+mkdir my_hw
+```
+
+The name has to be exactly `my_hw`. The repository's [`.gitignore`](.gitignore) ignores that folder and everything inside it, which gives you three things:
+
+- **`git pull` stays clean.** Git never looks inside `my_hw/`, so pulling new course material cannot conflict with your work or overwrite it.
+- **Your work stays private.** Nothing in `my_hw/` can be committed or pushed by accident, even if you fork the repository.
+- **Same environment.** The folder sits inside the repository, so your notebooks use the course `.venv` and the **Python 3.13 (Deep Forecasting)** kernel with no extra setup.
+
+A layout like this works well:
+
+```text
+Deep_forecasting-USU/
+├── Lectures and codes/
+├── data/
+└── my_hw/              <- yours, ignored by git
+    ├── hw1/
+    ├── hw2/
+    └── final_project/
+```
+
+Two habits to pick up:
+
+- **Copy, don't edit.** To experiment with a lecture notebook, copy it into `my_hw/` and work on the copy. Editing the original is what causes `git pull` conflicts later. From a notebook in `my_hw/hw1/`, the course datasets are at `../../data/`.
+- **Back it up yourself.** Because git ignores `my_hw/`, it is not on GitHub and `git pull` will not restore it. Keep a copy in OneDrive, Google Drive, or Box. Deleting `.venv` is safe; deleting the repository folder deletes your homework with it.
+
+Submit homework the way the assignment asks (the repository is not a submission channel). Working on Colab instead? Save your notebooks to Google Drive with **File → Save a copy in Drive**; `my_hw/` only matters for local work.
 
 ---
 
