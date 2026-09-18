@@ -172,26 +172,26 @@ If you already cloned the repository, update it with `git pull`.
 
 #### Windows: cloning into Google Drive (recommended if you also use Colab)
 
-Keeping the repository inside your Google Drive folder is handy: your `my_hw/` notebooks are then visible to Colab and to your laptop at the same time. On **macOS** this just works: clone and run `uv sync` inside the Drive folder as usual. On **Windows**, Drive appears as a virtual drive letter (`G:\My Drive`) that cannot handle git's lock files or the thousands of small files in a `.venv`, so two things need to live outside Drive: git's own database and the environment.
-
-Open PowerShell **inside your Google Drive folder** and clone like this:
+Keeping the repository inside your Google Drive folder is handy: your `my_hw/` notebooks are then visible to Colab and to your laptop at the same time. On **macOS** this just works. On **Windows**, Drive is a virtual drive letter (`G:\My Drive`) with one quirk: while Drive is still uploading the freshly cloned files, git's switch of its `HEAD` file from `master` to `main` gets corrupted and the clone dies with `cannot lock ref 'HEAD' ... Invalid argument`. Telling git to start on `main` avoids that switch. Run this once (it is GitHub's default anyway and harmless everywhere else):
 
 ```powershell
-git clone --separate-git-dir "$env:USERPROFILE\df-course.git" https://github.com/PJalgotrader/Deep_forecasting-USU.git
+git config --global init.defaultBranch main
+```
+
+Then clone as usual from a PowerShell opened inside your Google Drive folder:
+
+```powershell
+git clone https://github.com/PJalgotrader/Deep_forecasting-USU.git
 cd Deep_forecasting-USU
 ```
 
-The course files land in Drive; git's database lands in your home folder, and a small `.git` file in the repository points to it. `git pull`, `git status` and everything else work as usual.
-
-Then, in **every PowerShell session** where you run `uv`, tell uv to build the environment in your home folder instead of inside the Drive folder. Run this line **before** `uv sync` or `uv run`:
+`uv sync` works inside the Drive folder too, but Drive uploads every one of the environment's roughly 29,000 files (1.3 GB), which makes the install many times slower and uses your Drive storage. To keep the environment on your local disk instead, run this line in each PowerShell session **before** `uv sync` or `uv run`:
 
 ```powershell
 $env:UV_PROJECT_ENVIRONMENT = "$env:USERPROFILE\df-venv"
 ```
 
-After that, continue with Step 3 exactly as written. If you use VS Code with the registered kernel (below), you only need this line when installing or updating; VS Code finds the kernel on its own.
-
-Do **not** clone into Drive on Windows without `--separate-git-dir`: the clone usually fails midway with `cannot lock ref 'HEAD'` or `Unlink of file ... failed`.
+If you use VS Code with the registered kernel (below), you only need that line when installing or updating; VS Code finds the kernel on its own.
 
 #### Step 3: Install the course environment
 
@@ -234,7 +234,7 @@ git pull
 uv sync
 ```
 
-Windows with the repository in Google Drive? Set `UV_PROJECT_ENVIRONMENT` first, as in the Drive section above.
+Repository in Google Drive with the environment kept outside it? Set `UV_PROJECT_ENVIRONMENT` first, as in the Drive section above.
 
 Your own work is not touched by `git pull` as long as it lives in [`my_hw/`](#-your-homework-folder-my_hw).
 
@@ -273,7 +273,7 @@ The official `pycaret` 3.3.2 package refuses to import on Python 3.12 or newer, 
 ### Quick troubleshooting
 
 - **`uv: command not found`** or **`'uv' is not recognized`**: either uv is not installed yet (Step 1) or the terminal was opened before the install. Close and reopen Terminal or PowerShell, then try `uv --version` again.
-- **Windows: `git clone` into Google Drive fails** with `cannot lock ref 'HEAD'`, `Invalid argument` or `Unlink of file ... failed`: delete the half-made folder and clone again with `--separate-git-dir` as shown in [Windows: cloning into Google Drive](#windows-cloning-into-google-drive-recommended-if-you-also-use-colab).
+- **Windows: `git clone` into Google Drive fails** with `cannot lock ref 'HEAD'`, `Invalid argument` or `Unlink of file ... failed`: answer `n`, delete the half-made folder, run `git config --global init.defaultBranch main`, and clone again (see [Windows: cloning into Google Drive](#windows-cloning-into-google-drive-recommended-if-you-also-use-colab)). If it still fails, keep git's database outside Drive: `git clone --separate-git-dir "$env:USERPROFILE\df-course.git" https://github.com/PJalgotrader/Deep_forecasting-USU.git`.
 - **Two notebooks show as modified right after cloning on Windows** (`Predicting_stock_price_PyCaret.ipynb` and `Predictiong_stock_price_PyCaret.ipynb`): a line-ending artifact, not a real change. Ignore it; `git pull` still works.
 - **Wrong Python version**: run `uv run python --version` from the repository root. It should report Python 3.13.
 - **Environment feels broken**: delete the `.venv` folder and run `uv sync` again. Nothing is lost; the recipe lives in `pyproject.toml` and `uv.lock`.
