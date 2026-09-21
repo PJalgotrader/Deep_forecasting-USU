@@ -1,10 +1,10 @@
 [project]
 name = "uv-simple-test"
 version = "0.1.0"
-description = "A tiny uv installation test for DATA 5630 students"
+description = "A tiny uv installation test for the course notebooks"
 requires-python = ">=3.13,<3.14"
 dependencies = [
-    "rich>=15,<16",
+    "pandas>=2.2",
 ]
 
 [tool.uv]

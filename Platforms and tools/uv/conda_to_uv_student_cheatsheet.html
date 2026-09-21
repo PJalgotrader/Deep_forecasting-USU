@@ -260,10 +260,10 @@
       <h3>pyproject.toml — "what I want"</h3>
       <p>
         A short text file you can read and edit. It names the project, says which Python versions it supports, and
-        lists the packages you asked for. This is the course's real one, trimmed:
+        lists the packages you asked for. This is a course repository's real one, trimmed:
       </p>
       <pre><code>[project]
-name = "deep-forecasting-course"
+name = "course-environment"
 version = "2026.9"
 requires-python = ">=3.13,&lt;3.14"      <span class="c"># which Python this project needs</span>
 dependencies = [
@@ -318,11 +318,11 @@ dependencies = [
         <div class="mini">
           <h3>A. Someone gives you a project (this course)</h3>
           <p>The project already has <code>pyproject.toml</code> and <code>uv.lock</code>. You do not create anything, you rebuild it:</p>
-          <pre><code>git clone https://github.com/PJalgotrader/Deep_forecasting-USU.git
-cd Deep_forecasting-USU
+          <pre><code>git clone https://github.com/PJalgotrader/&lt;course-repo&gt;.git
+cd &lt;course-repo&gt;
 uv sync
 uv run jupyter lab</code></pre>
-          <p class="small">First <code>uv sync</code> also downloads Python 3.13 if you do not have it. Later ones take seconds.</p>
+          <p class="small"><code>&lt;course-repo&gt;</code> is <code>Machine_Learning-USU</code>, <code>Deep_Learning-USU</code> or <code>Deep_forecasting-USU</code>. All three work the same way. First <code>uv sync</code> also downloads Python 3.13 if you do not have it. Later ones take seconds.</p>
         </div>
         <div class="mini">
           <h3>B. You start your own project</h3>
@@ -333,7 +333,7 @@ uv init --python 3.13
 uv add numpy pandas scikit-learn matplotlib
 uv add --dev jupyterlab ipykernel
 uv run python</code></pre>
-          <p class="small"><code>uv init</code> creates <code>pyproject.toml</code>, <code>.python-version</code>, a <code>.gitignore</code> and a hello-world <code>main.py</code>.</p>
+          <p class="small"><code>uv init</code> creates <code>pyproject.toml</code>, <code>.python-version</code>, a <code>.gitignore</code>, a <code>README.md</code> and a starter <code>src/</code> folder. Only the first two matter to you.</p>
         </div>
       </div>
       <div class="tip">
@@ -450,9 +450,17 @@ uv run python --version       <span class="c"># confirm which one the project us
         The course's <code>.venv</code> sits at the top of the repository while the notebooks live in the Module folders. Register the
         environment once as a named kernel, and it shows up in every notebook, wherever it is:
       </p>
-      <pre><code>cd Deep_forecasting-USU
-uv run python -m ipykernel install --user --name deep-forecasting --display-name "Python 3.13 (Deep Forecasting)"</code></pre>
-      <p>Then in any notebook: <strong>Select Kernel → Jupyter Kernel → Python 3.13 (Deep Forecasting)</strong>.</p>
+      <pre><code>cd &lt;course-repo&gt;
+uv run python -m ipykernel install --user --name &lt;kernel-name&gt; --display-name "&lt;display name&gt;"</code></pre>
+      <table>
+        <thead><tr><th>Course repository</th><th>kernel-name</th><th>display name</th></tr></thead>
+        <tbody>
+          <tr><td><code>Machine_Learning-USU</code></td><td><code>ml-course</code></td><td><code>Python 3.13 (ML course)</code></td></tr>
+          <tr><td><code>Deep_Learning-USU</code></td><td><code>deep-learning</code></td><td><code>Python 3.13 (Deep Learning)</code></td></tr>
+          <tr><td><code>Deep_forecasting-USU</code></td><td><code>deep-forecasting</code></td><td><code>Python 3.13 (Deep Forecasting)</code></td></tr>
+        </tbody>
+      </table>
+      <p>Then in any notebook: <strong>Select Kernel → Jupyter Kernel → </strong> the display name above.</p>
     </section>
 
     <section class="card" id="disk">
@@ -532,14 +540,20 @@ uv cache clean    <span class="c"># delete the whole cache (safe, next sync re-d
     </section>
 
     <section class="card" id="course">
-      <h2>12. This course's project, start to finish</h2>
-      <pre><code><span class="c"># once</span>
-cd Deep_forecasting-USU
+      <h2>12. A course repository, start to finish</h2>
+      <p class="small">Same steps in all three course repositories. Kernel names are in section 9.</p>
+      <pre><code><span class="c"># ten-second test (optional, once per computer)</span>
+cd &lt;course-repo&gt;/"Platforms and tools/uv/simple_test"
 uv sync
-uv run python -m ipykernel install --user --name deep-forecasting --display-name "Python 3.13 (Deep Forecasting)"
+uv run python main.py         <span class="c"># prints your Python version, your pandas version, "uv is working!"</span>
+
+<span class="c"># once</span>
+cd &lt;course-repo&gt;
+uv sync
+uv run python -m ipykernel install --user --name &lt;kernel-name&gt; --display-name "&lt;display name&gt;"
 
 <span class="c"># every time</span>
-uv run jupyter lab            <span class="c"># or open a notebook in VS Code and pick "Python 3.13 (Deep Forecasting)"</span>
+uv run jupyter lab            <span class="c"># or open a notebook in VS Code and pick the display name</span>
 
 <span class="c"># check</span>
 uv run python scripts/check_environment.py   <span class="c"># ends with "Your course environment is ready."</span></code></pre>
@@ -590,7 +604,7 @@ Do not use pip or Conda unless explicitly requested. Never edit uv.lock by hand.
     </section>
 
     <p class="footer">
-      Conda → uv Student Guide · Deep Forecasting, Utah State University
+      Conda → uv Student Guide · Pedram Jahangiry's Machine Learning, Deep Learning and Deep Forecasting courses, Utah State University
     </p>
   </main>
 </body>

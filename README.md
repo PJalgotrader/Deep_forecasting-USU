@@ -143,7 +143,7 @@ For the PyCaret notebooks (Modules 3, 4, 5 and the stock-market examples), alway
 
 The repository root **is** the course environment: one `pyproject.toml`, one `uv.lock`, Python 3.13. `uv` downloads the right Python, creates an isolated `.venv`, and installs the exact package versions recorded in `uv.lock`. It is about 1.3 GB.
 
-New to uv? Start with the [Conda → uv student cheatsheet (PDF)](Platforms%20and%20tools/uv/conda_to_uv_student_cheatsheet.pdf). The [HTML version](Platforms%20and%20tools/uv/conda_to_uv_student_cheatsheet.html) is also available.
+New to uv? Start with [`Platforms and tools/uv/`](Platforms%20and%20tools/uv/): a quick start, the [Conda → uv student cheatsheet (PDF)](Platforms%20and%20tools/uv/conda_to_uv_student_cheatsheet.pdf) ([HTML](Platforms%20and%20tools/uv/conda_to_uv_student_cheatsheet.html)), and a ten-second test project. The same folder, and the same commands, are used in the Machine Learning and Deep Learning course repositories.
 
 #### Step 1: Install uv
 
@@ -171,6 +171,17 @@ cd Deep_forecasting-USU
 ```
 
 If you already cloned the repository, update it with `git pull`.
+
+Optional, before the real install: the ten-second test.
+
+```bash
+cd "Platforms and tools/uv/simple_test"
+uv sync
+uv run python main.py
+cd ../../..
+```
+
+It prints your Python version, your pandas version, and **uv is working!**. That is the whole uv workflow on a tiny project.
 
 #### Step 3: Install the course environment
 

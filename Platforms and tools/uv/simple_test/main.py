@@ -1,4 +1,7 @@
-from rich import print
+import sys
 
+import pandas as pd
 
-print("[bold green]uv is working![/bold green]")
+print(f"Python {sys.version.split()[0]}")
+print(f"pandas {pd.__version__}")
+print("uv is working!")
